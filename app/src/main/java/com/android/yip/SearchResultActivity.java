@@ -1,12 +1,13 @@
-package com.android.yelplite;
+package com.android.yip;
 
 import android.app.SearchManager;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.util.Log;
 
 public class SearchResultActivity extends AppCompatActivity {
+    private static final String LOG_TAG = "SearchResultActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +24,11 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
     private void handleIntent(Intent intent) {
-
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             // TODO: use the query to search your data somehow
 
-            Toast.makeText(this, "Query: " +query, Toast.LENGTH_SHORT).show();
+            Log.d(LOG_TAG, "Query: " +query);
         }
     }
 }

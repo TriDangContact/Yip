@@ -1,4 +1,4 @@
-package com.android.yelplite.dummy;
+package com.android.yip.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;

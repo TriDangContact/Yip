@@ -1,4 +1,4 @@
-package com.android.yelplite;
+package com.android.yip;
 
 import org.junit.Test;
 

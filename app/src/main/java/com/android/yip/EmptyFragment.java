@@ -1,7 +1,8 @@
-package com.android.yelplite;
+package com.android.yip;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,22 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -45,6 +44,7 @@ public class EmptyFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private EditText mEditText;
     private Button mTestBtn;
     private TextView mTestView;
     private ProgressDialog mProgressDialog;
@@ -87,18 +87,37 @@ public class EmptyFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_empty, container, false);
 
-        TextView textView = new TextView(getActivity());
-        textView.setText(R.string.hello_blank_fragment);
-
         mProgressDialog = new ProgressDialog(getActivity());
 
         // TODO: FOR TESTING
+        mEditText = (EditText) view.findViewById(R.id.text_input);
         mTestBtn = (Button) view.findViewById(R.id.testing_btn);
         mTestView = (TextView) view.findViewById(R.id.no_list_text);
         mTestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                runQuery();
+                String endpoint = getString(R.string.yelp_endpoint_business_search);
+                String location = "San Diego, CA";
+                final String text = mEditText.getText().toString();
+
+                // Build the URI using various parameters
+                HashMap<String, String> parameters = new HashMap<>();
+
+                // business search parameters
+                // Req: term, location, lat/long (if location == null), limit, offset
+                parameters.put("term", text);
+                parameters.put("location", location);
+                parameters.put("limit", "5");
+//              parameters.put("latitude", "32.775807");
+//              parameters.put("longitude", "-117.069864");
+
+                // autocomplete parameters
+                // Req: text, lat, long, locale(optional)
+//              parameters.put("text", text);
+//              parameters.put("latitude", "32.775807");
+//              parameters.put("longitude", "-117.069864");
+
+                runGetQuery(endpoint, parameters);
             }
         });
 
@@ -130,17 +149,44 @@ public class EmptyFragment extends Fragment {
     }
 
 
+    /**
+     * @param path the endpoints for the request
+     * @param hashMap the map that has the key, value pairs of parameters
+     * @return the complete URL string
+     */
+    private String getURL(String path, HashMap<String, String> hashMap) {
+        String url;
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(getString(R.string.request_protocol))
+                .authority(getString(R.string.yelp_api_domain))
+                .path(path);
+
+        // get every value f
+        for (HashMap.Entry<String, String> entry : hashMap.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            try {
+                value = URLEncoder.encode(value, "UTF-8");
+            } catch (UnsupportedEncodingException exception) {
+                Log.d(LOG_TAG, exception.getMessage());
+            }
+            builder.appendQueryParameter(key, value);
+        }
+
+        builder.build();
+        url = builder.toString();
+        return url;
+    }
+
 
     // TODO: process the query
-    private void runQuery() {
+    private void runGetQuery(String endpoint, HashMap<String, String> parameters) {
         String tag_json_obj = "json_obj_req";
-        String url2 ="https://api.github.com/users/TriDangContact";
-        String url = "https://api.yelp.com/v3/businesses/north-india-restaurant-san-francisco";
-        final String key = "VnI34nhRvMkQX8AniZeKqvQCj" +
-                "-pahO3sTvdrmu_nDVTSBDBQHTQUJQxEgvNNTnk_ApqnqfzL38vCqSWvBZWBnTsFBKfpPi3JLSsYtpkh3BS0cnfWB5jB4cLMHNrIXHYx";
 
-        final ProgressDialog pDialog = new ProgressDialog(getActivity());
-        mProgressDialog.setMessage("Getting Request...");
+        String url = getURL(endpoint, parameters);
+        Log.d(LOG_TAG, "URL: " + url);
+
+        mProgressDialog.setMessage(getString(R.string.loading_request));
         mProgressDialog.show();
 
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
@@ -148,27 +194,27 @@ public class EmptyFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        String values = "";
-                        JSONArray ja = new JSONArray();
-                        HashMap<String, String> hm = new HashMap<>();
-                        try {
+                        // Testing retrieval of JSONArray
+//                        String values = "";
+//                        JSONArray ja = new JSONArray();
+//                        try {
 //                            values = response.getString("categories");
-                            // testing retrieval of JSONArray inside JSON
-                            ja = (JSONArray) response.get("categories");
-                            // testing retrieval of JSONObjects inside JSONArrayy
-                            for (int i = 0; i < ja.length(); ++i) {
-                                JSONObject rec = ja.getJSONObject(i);
-                                String alias = rec.getString("alias");
-                                String title = rec.getString("title");
-                                mTestView.setText("VOLLEY: " + alias + " " + title);
-                                mProgressDialog.hide();
-                            }
-
-                        } catch (JSONException error){
-                            Log.d(LOG_TAG, error.toString());
-                        }
-//                        mTestView.setText("VOLLEY: " +ja);
-//                        pDialog.hide();
+//                            // testing retrieval of JSONArray inside JSON
+//                            ja = (JSONArray) response.get("categories");
+//                            // testing retrieval of JSONObjects inside JSONArrayy
+//                            for (int i = 0; i < ja.length(); ++i) {
+//                                JSONObject rec = ja.getJSONObject(i);
+//                                String alias = rec.getString("alias");
+//                                String title = rec.getString("title");
+//                                mTestView.setText("VOLLEY: " + alias + " " + title);
+//                                mProgressDialog.hide();
+//                            }
+//
+//                        } catch (JSONException error){
+//                            Log.d(LOG_TAG, error.toString());
+//                        }
+                        mTestView.setText("VOLLEY: " +response.toString());
+                        mProgressDialog.hide();
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -181,7 +227,9 @@ public class EmptyFragment extends Fragment {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Authorization", "Bearer " + key);
+                // TODO: Authentication
+                headers.put(getString(R.string.request_header_key),
+                        getString(R.string.request_header_value) + " " + getString(R.string.yelp_api_key));
                 return headers;
             }
         };

@@ -1,4 +1,4 @@
-package com.android.yelplite;
+package com.android.yip;
 
 import android.app.Application;
 import android.content.Context;
