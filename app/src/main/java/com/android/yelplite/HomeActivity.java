@@ -10,10 +10,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.yelplite.dummy.DummyContent;
@@ -26,6 +29,7 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
     private Toolbar mToolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,7 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
             }
         };
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
 
         displayHomeFragment();
     }
@@ -147,8 +152,6 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
     private void displayDetailsFragment() {
 
     }
-
-
 
 
 }
