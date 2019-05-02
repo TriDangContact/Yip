@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import com.android.yip.dummy.DummyContent;
 import com.android.yip.dummy.DummyContent.DummyItem;
 
+import java.util.List;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -57,13 +59,15 @@ public class SearchListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_list, container, false);
+        ContentList list = ContentList.get(getActivity());
+        List<Business> businessList = list.getBusinesses();
 
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new SearchRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new SearchRecyclerViewAdapter(businessList, mListener));
         }
         return view;
     }
@@ -89,6 +93,6 @@ public class SearchListFragment extends Fragment {
 
     public interface OnSearchListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onSearchListFragmentInteraction(DummyItem item);
+        void onSearchListFragmentInteraction(Business item);
     }
 }

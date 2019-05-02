@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,13 +17,18 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.android.yip.dummy.DummyContent;
+import com.google.android.gms.dynamic.SupportFragmentWrapper;
+import com.google.android.gms.maps.SupportMapFragment;
+
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements SearchListFragment.OnSearchListFragmentInteractionListener, MapsFragment.OnMapsFragmentInteractionListener, EmptyFragment.OnEmptyFragmentInteractionListener {
-    private static final String HOME_TAG = "HomeActivity";
+    private static final String LOG_TAG = "HomeActivity";
     private static final String FRAGMENT_1 = "Fragment 1";
     private static final String FRAGMENT_2 = "Fragment 2";
     private static final String FRAGMENT_3 = "Fragment 3";
 
+    private BottomNavigationView mBottomNavigationView;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
     private Toolbar mToolbar;
 
@@ -35,32 +41,34 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
         mToolbar = (Toolbar) findViewById(R.id.action_bar);
         setSupportActionBar(mToolbar);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        mBottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         mOnNavigationItemSelectedListener
                 = new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.navigation_home:
-                        Toast.makeText(HomeActivity.this, getString(R.string.title_home),
-                                Toast.LENGTH_SHORT).show();
                         displayHomeFragment();
                         return true;
                     case R.id.navigation_search:
-                        Toast.makeText(HomeActivity.this, getString(R.string.title_search),
-                                Toast.LENGTH_SHORT).show();
+
+                        // TODO: create a temporary list of business to display
+                        ContentList list = ContentList.get(HomeActivity.this);
+                        List<Business> businessList = list.getBusinesses();
+                        Business business = new Business();
+                        businessList.add(business);
+
+
                         displaySearchFragment();
                         return true;
                     case R.id.navigation_map:
-                        Toast.makeText(HomeActivity.this, getString(R.string.title_map),
-                                Toast.LENGTH_SHORT).show();
                         displayMapFragment();
                         return true;
                 }
                 return false;
             }
         };
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        mBottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
 
         displayHomeFragment();
@@ -95,8 +103,11 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
     }
 
     @Override
-    public void onSearchListFragmentInteraction(DummyContent.DummyItem item) {
-        Toast.makeText(HomeActivity.this, "Selected: " + item.toString(), Toast.LENGTH_SHORT).show();
+    public void onSearchListFragmentInteraction(Business item) {
+        Toast.makeText(HomeActivity.this, "Selected: " + item.mName, Toast.LENGTH_SHORT).show();
+
+        // TODO: start a new activity that displays the business details
+        displayBusinessDetail(item.mId);
     }
 
     // Doesn't need
@@ -110,6 +121,12 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
         Toast.makeText(this, "Touching empty", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+//        updateNavigation();
+    }
+
 
     // TODO: implement various fragments
 
@@ -119,7 +136,7 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
         Fragment fragment = EmptyFragment.newInstance("test1", "test2");
         manager.beginTransaction()
                 .replace(R.id.fragment_container, fragment, FRAGMENT_1)
-                .addToBackStack(null)
+//                .addToBackStack(null)
                 .commitAllowingStateLoss();
     }
 
@@ -128,7 +145,7 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
         Fragment fragment = SearchListFragment.newInstance();
         manager.beginTransaction()
                 .replace(R.id.fragment_container, fragment, FRAGMENT_2)
-                .addToBackStack(null)
+//                .addToBackStack(null)
                 .commitAllowingStateLoss();
     }
 
@@ -137,12 +154,44 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
         Fragment fragment = MapsFragment.newInstance("test1", "test2");
         manager.beginTransaction()
                 .replace(R.id.fragment_container, fragment, FRAGMENT_3)
-                .addToBackStack(null)
+//                .addToBackStack(null)
                 .commitAllowingStateLoss();
     }
 
-    private void displayDetailsFragment() {
+    private void displayBusinessDetail(String id) {
+        // TODO: new intent to start activity, passing in the id
+    }
 
+
+    // make sure that the currently selected navigation matches current fragment displayed
+    private void updateNavigation() {
+        EmptyFragment emptyFragment =
+                (EmptyFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_1);
+        if (emptyFragment != null) {
+            if (emptyFragment.isVisible()) {
+                // set navigation to Home
+                mBottomNavigationView.setSelectedItemId(R.id.navigation_home);
+            }
+        }
+
+        SearchListFragment searchListFragment =
+                (SearchListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_2);
+        if (searchListFragment != null) {
+            if (searchListFragment.isVisible()) {
+                // set navigation to Search
+                mBottomNavigationView.setSelectedItemId(R.id.navigation_search);
+            }
+
+        }
+
+        MapsFragment mapsFragment = (MapsFragment) getSupportFragmentManager().findFragmentByTag(
+                FRAGMENT_3);
+        if (mapsFragment != null) {
+            if (mapsFragment.isVisible()) {
+                // set navigation to Maps
+                mBottomNavigationView.setSelectedItemId(R.id.navigation_map);
+            }
+        }
     }
 
 

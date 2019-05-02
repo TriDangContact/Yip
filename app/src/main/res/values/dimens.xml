@@ -3,6 +3,16 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
-    <dimen name="post_picture_size">350dp</dimen>
+
     <dimen name="create_picture_size">100dp</dimen>
+
+
+    <dimen name="search_list_layout_margin">16dp</dimen>
+    <dimen name="search_item_business_text_scroll_bottom_margin">10dp</dimen>
+    <dimen name="search_item_business_image_width">110dp</dimen>
+    <dimen name="search_item_business_rating_image_margin">5dp</dimen>
+    <dimen name="search_item_business_review_text">14sp</dimen>
+    <dimen name="search_item_card_size">160dp</dimen>
+    <dimen name="search_item_card_elevation">4dp</dimen>
+    <dimen name="search_item_card_corner_radius">3dp</dimen>
 </resources>

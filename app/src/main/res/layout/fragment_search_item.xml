@@ -3,79 +3,112 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/search_item_card_size"
     app:cardUseCompatPadding="true"
-    app:cardElevation="4dp"
-    app:cardCornerRadius="3dp">
+    app:cardElevation="@dimen/search_item_card_elevation"
+    app:cardCornerRadius="@dimen/search_item_card_corner_radius">
 
-    <RelativeLayout
+    <!-- put whatever you want -->
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
-
-        <RelativeLayout
-            android:id="@+id/linear_post"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp">
-            <TextView
-                android:id="@+id/fm_post_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="@dimen/text_margin"
-                android:layout_marginBottom="8dp"
-                android:layout_centerVertical="true"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:textAppearance="?attr/textAppearanceListItem"
-                tools:text="post_1_username"/>
-
-            <ImageView
-                android:id="@+id/fm_post_option"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_options"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"/>
-        </RelativeLayout>
-
-        <ProgressBar
-            android:id="@+id/fm_post_progress"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/post_picture_size"
-            android:layout_below="@+id/linear_post"
-            android:visibility="visible" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/fm_post_image"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/post_picture_size"
-            android:layout_marginBottom="10dp"
-            android:layout_below="@+id/linear_post"
-            android:src="@drawable/ic_launcher_background" />
+            android:id="@+id/fm_business_image"
+            android:layout_width="@dimen/search_item_business_image_width"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_margin="15dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/profile_icon"/>
 
-        <TextView
-            android:id="@+id/fm_post_caption"
+        <HorizontalScrollView
+            android:id="@+id/fm_search_item_scroll_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:layout_below="@id/fm_post_image"
-            android:textAppearance="?attr/textAppearanceListItem"
-            tools:text="post_1_caption"/>
+            android:layout_marginTop="@dimen/search_item_business_text_scroll_bottom_margin"
+            android:layout_marginEnd="@dimen/search_item_business_text_scroll_bottom_margin"
+            android:layout_toEndOf="@id/fm_business_image">
 
-        <TextView
-            android:id="@+id/fm_post_hashtag"
+            <TextView
+                android:id="@+id/fm_business_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textStyle="bold"
+                tools:text="item_1_name" />
+
+        </HorizontalScrollView>
+
+
+        <ImageView
+            android:id="@+id/fm_business_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:layout_below="@id/fm_post_caption"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:textColor="@color/colorPrimaryDark"
-            tools:text="post_1_hashtag" />
+            android:layout_marginTop="@dimen/search_item_business_rating_image_margin"
+            android:layout_marginBottom="@dimen/search_item_business_rating_image_margin"
+            android:src="@drawable/stars_small_5"
+            android:layout_below="@+id/fm_search_item_scroll_1"
+            android:layout_alignParentEnd="false"
+            android:layout_toEndOf="@id/fm_business_image"
+            />
+
+        <TextView
+            android:id="@+id/fm_business_review_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fm_business_rating"
+            android:layout_toEndOf="@id/fm_business_image"
+            android:textSize="@dimen/search_item_business_review_text"
+            tools:text="12345"
+            />
+        <TextView
+            android:id="@+id/fm_business_reviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_below="@+id/fm_business_rating"
+            android:layout_toEndOf="@id/fm_business_review_count"
+            android:textSize="@dimen/search_item_business_review_text"
+            android:text="@string/search_item_review"
+            />
+
+        <HorizontalScrollView
+            android:id="@+id/fm_search_item_scroll_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/search_item_business_text_scroll_bottom_margin"
+            android:layout_below="@+id/fm_business_review_count"
+            android:layout_toEndOf="@id/fm_business_image">
+
+            <TextView
+                android:id="@+id/fm_business_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="item_1_category" />
+
+        </HorizontalScrollView>
+
+        <HorizontalScrollView
+            android:id="@+id/fm_search_item_scroll_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/search_item_business_text_scroll_bottom_margin"
+            android:layout_below="@+id/fm_search_item_scroll_2"
+            android:layout_toEndOf="@id/fm_business_image">
+
+            <TextView
+                android:id="@+id/fm_business_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="item_1_address" />
+
+        </HorizontalScrollView>
 
     </RelativeLayout>
 

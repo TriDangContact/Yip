@@ -6,10 +6,7 @@
     <string name="search_title">Search for Businesses</string>
     <string name="search_hint">Dominos, Pizza Hut, etc.</string>
     <string name="empty_list">Empty List.</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="search_item_review">Reviews</string>
 
     <string name="request_protocol">https</string>
     <string name="request_header_key">Authorization</string>
