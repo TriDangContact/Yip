@@ -16,12 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.android.yip.dummy.DummyContent;
-import com.google.android.gms.dynamic.SupportFragmentWrapper;
-import com.google.android.gms.maps.SupportMapFragment;
-
-import java.util.List;
-
 public class HomeActivity extends AppCompatActivity implements SearchListFragment.OnSearchListFragmentInteractionListener, MapsFragment.OnMapsFragmentInteractionListener, EmptyFragment.OnEmptyFragmentInteractionListener {
     private static final String LOG_TAG = "HomeActivity";
     private static final String FRAGMENT_1 = "Fragment 1";

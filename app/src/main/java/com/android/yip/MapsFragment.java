@@ -3,15 +3,18 @@ package com.android.yip;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
@@ -30,12 +33,15 @@ public class MapsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private static final String LOG_TAG = "MapsFragment";
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private GoogleMap mMap;
 
     private OnMapsFragmentInteractionListener mListener;
+    private GoogleMap.OnInfoWindowClickListener mOnInfoWindowClickListener;
 
     public MapsFragment() {
         // Required empty public constructor
@@ -72,6 +78,7 @@ public class MapsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
@@ -82,6 +89,9 @@ public class MapsFragment extends Fragment {
                 ContentList list = ContentList.get(getActivity());
                 List<Business> businessList = list.getBusinesses();
                 LatLng startingSpot;
+
+                // Have to check if list is empty, or else map will crash trying to display null
+                // markers
                 if (businessList.size() >= 1) {
                     // Pan the camera to the first business in our list
                     Business firstBusiness = businessList.get(0);
@@ -92,20 +102,37 @@ public class MapsFragment extends Fragment {
 
                     // Add a marker in for every business in the list
                     for (Business business : businessList) {
+                        int index = businessList.indexOf(business) + 1;
                         LatLng businessMarker = new LatLng(business.mLatitude, business.mLongitude);
-                        mMap.addMarker(new MarkerOptions().position(businessMarker).title(business.mName));
+                        Marker marker = mMap.addMarker(new MarkerOptions()
+                                .position(businessMarker)
+                                .title(index + ". " + business.mName));
+                        // store the business id so we can use it when the info window is clicked on
+                        marker.setTag(business);
                     }
                 }
                 else {
-                    startingSpot = new LatLng(0,0);
+                    startingSpot = new LatLng(32.7157,-117.1611);
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(startingSpot));
                 }
 
+                mMap.setInfoWindowAdapter(new MapsCustomInfoWindowAdapter(getContext()));
+
+                mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        Toast.makeText(getContext(),
+                                "Marker: " +marker.getTitle() + ", Tag: " + marker.getTag(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
+
         return view;
 
     }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(String string) {
@@ -130,6 +157,7 @@ public class MapsFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

@@ -6,6 +6,7 @@
 
     <dimen name="create_picture_size">100dp</dimen>
 
+    <dimen name="map_info_window_card_size">50dp</dimen>
 
     <dimen name="search_list_layout_margin">16dp</dimen>
     <dimen name="search_item_business_text_scroll_bottom_margin">10dp</dimen>

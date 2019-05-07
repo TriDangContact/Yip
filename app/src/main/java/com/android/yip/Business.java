@@ -1,7 +1,15 @@
 package com.android.yip;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+
 
 public class Business {
     public String mId = "";
@@ -20,6 +28,7 @@ public class Business {
     public String[] mPhotos;
     public String mPrice = "";
     public String mHours = "";
+    public Bitmap mImage;
 
 
     public Business() {}
@@ -53,6 +62,20 @@ public class Business {
         mAddress = address;
     }
 
+    public void setBusinessImage(String url, Context context) {
+        Glide.with(context)
+                .asBitmap()
+                .load(url)
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        mImage = resource;
+                    }
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
+                });
+    }
 
     public String toString() {
         return mName + " " + mId + ", ";

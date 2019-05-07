@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/search_item_card_size"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:contentPadding="2dp"
     app:cardUseCompatPadding="true"
     app:cardElevation="@dimen/search_item_card_elevation"
     app:cardCornerRadius="@dimen/search_item_card_corner_radius">
@@ -19,11 +21,14 @@
         <ImageView
             android:id="@+id/fm_business_image"
             android:layout_width="@dimen/search_item_business_image_width"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/search_item_business_image_width"
             android:layout_alignParentStart="true"
             android:layout_margin="15dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/profile_icon"/>
+            android:src="@drawable/profile_icon"
+            android:scaleType="centerCrop"
+            android:contentDescription="@string/fm_search_item_business_image_description"/>
+
 
         <HorizontalScrollView
             android:id="@+id/fm_search_item_scroll_1"
@@ -54,6 +59,7 @@
             android:layout_below="@+id/fm_search_item_scroll_1"
             android:layout_alignParentEnd="false"
             android:layout_toEndOf="@id/fm_business_image"
+            android:contentDescription="@string/fm_search_item_rating_description"
             />
 
         <TextView
@@ -69,7 +75,7 @@
             android:id="@+id/fm_business_reviews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_below="@+id/fm_business_rating"
             android:layout_toEndOf="@id/fm_business_review_count"
             android:textSize="@dimen/search_item_business_review_text"

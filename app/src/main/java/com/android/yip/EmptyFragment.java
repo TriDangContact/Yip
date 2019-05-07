@@ -279,7 +279,7 @@ public class EmptyFragment extends Fragment {
             }
         };
         VolleyQueueSingleton
-                .getInstance(getActivity()
+                .getInstance(getContext()
                         .getApplicationContext())
                 .addToRequestQueue(jsonObjReq, tag_json_obj_autocomp);
     }
@@ -292,7 +292,11 @@ public class EmptyFragment extends Fragment {
             newBusiness.mId = businessJO.getString("id");
             newBusiness.mAlias = businessJO.getString("alias");
             newBusiness.mName = businessJO.getString("name");
-            newBusiness.mImageUrl = businessJO.getString("image_url");
+
+            String imageUrl = businessJO.getString("image_url");
+            newBusiness.mImageUrl = imageUrl;
+            newBusiness.setBusinessImage(imageUrl, getContext());
+
             newBusiness.mIsClosed = businessJO.getBoolean("is_closed");
             newBusiness.mUrl = businessJO.getString("url");
             newBusiness.mPhone = businessJO.getString("phone");

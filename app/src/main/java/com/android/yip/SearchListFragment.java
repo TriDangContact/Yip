@@ -9,9 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.yip.dummy.DummyContent;
-import com.android.yip.dummy.DummyContent.DummyItem;
-
 import java.util.List;
 
 /**
@@ -59,7 +56,7 @@ public class SearchListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_list, container, false);
-        ContentList list = ContentList.get(getActivity());
+        ContentList list = ContentList.get(getContext());
         List<Business> businessList = list.getBusinesses();
 
         // Set the adapter
