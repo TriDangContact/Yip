@@ -14,6 +14,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -77,11 +79,28 @@ public class MapsFragment extends Fragment {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
+                ContentList list = ContentList.get(getActivity());
+                List<Business> businessList = list.getBusinesses();
+                LatLng startingSpot;
+                if (businessList.size() >= 1) {
+                    // Pan the camera to the first business in our list
+                    Business firstBusiness = businessList.get(0);
+                    startingSpot = new LatLng(firstBusiness.mLatitude,
+                            firstBusiness.mLongitude);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(startingSpot));
+                    mMap.moveCamera((CameraUpdateFactory.zoomTo(10.0f)));
 
-                // Add a marker in Sydney and move the camera
-                LatLng sdsu = new LatLng(32.775807, -117.069864);
-                mMap.addMarker(new MarkerOptions().position(sdsu).title("Marker SDSU"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(sdsu));
+                    // Add a marker in for every business in the list
+                    for (Business business : businessList) {
+                        LatLng businessMarker = new LatLng(business.mLatitude, business.mLongitude);
+                        mMap.addMarker(new MarkerOptions().position(businessMarker).title(business.mName));
+                    }
+                }
+                else {
+                    startingSpot = new LatLng(0,0);
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(startingSpot));
+                }
+
             }
         });
         return view;

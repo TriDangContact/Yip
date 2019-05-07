@@ -19,11 +19,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -98,7 +101,7 @@ public class EmptyFragment extends Fragment {
             public void onClick(View v) {
                 String endpoint = getString(R.string.yelp_endpoint_business_search);
                 String location = "San Diego, CA";
-                final String text = mEditText.getText().toString();
+                String text = mEditText.getText().toString();
 
                 // Build the URI using various parameters
                 HashMap<String, String> parameters = new HashMap<>();
@@ -107,7 +110,7 @@ public class EmptyFragment extends Fragment {
                 // Req: term, location, lat/long (if location == null), limit, offset
                 parameters.put("term", text);
                 parameters.put("location", location);
-                parameters.put("limit", "5");
+                parameters.put("limit", "10");
 //              parameters.put("latitude", "32.775807");
 //              parameters.put("longitude", "-117.069864");
 
@@ -117,7 +120,7 @@ public class EmptyFragment extends Fragment {
 //              parameters.put("latitude", "32.775807");
 //              parameters.put("longitude", "-117.069864");
 
-                runGetQuery(endpoint, parameters);
+                runSearchQuery(endpoint, parameters);
             }
         });
 
@@ -179,9 +182,9 @@ public class EmptyFragment extends Fragment {
     }
 
 
-    // TODO: process the query
-    private void runGetQuery(String endpoint, HashMap<String, String> parameters) {
-        String tag_json_obj = "json_obj_req";
+    // TODO: implement search query to search for businesses based on text entered
+    private void runSearchQuery(String endpoint, HashMap<String,String> parameters) {
+        String tag_json_obj_search = "json_obj_search_req";
 
         String url = getURL(endpoint, parameters);
         Log.d(LOG_TAG, "URL: " + url);
@@ -194,25 +197,67 @@ public class EmptyFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        // Testing retrieval of JSONArray
-//                        String values = "";
-//                        JSONArray ja = new JSONArray();
-//                        try {
-//                            values = response.getString("categories");
-//                            // testing retrieval of JSONArray inside JSON
-//                            ja = (JSONArray) response.get("categories");
-//                            // testing retrieval of JSONObjects inside JSONArrayy
-//                            for (int i = 0; i < ja.length(); ++i) {
-//                                JSONObject rec = ja.getJSONObject(i);
-//                                String alias = rec.getString("alias");
-//                                String title = rec.getString("title");
-//                                mTestView.setText("VOLLEY: " + alias + " " + title);
-//                                mProgressDialog.hide();
-//                            }
-//
-//                        } catch (JSONException error){
-//                            Log.d(LOG_TAG, error.toString());
-//                        }
+                        // TODO: instantiate Business object using response, and add Business
+                        // object to BusinessList
+
+                        ContentList list = ContentList.get(getActivity());
+                        List<Business> businessList = list.getBusinesses();
+                        businessList.clear();
+                        try {
+                            JSONArray businessesArray = (JSONArray) response.get("businesses");
+
+                            // getting every bussiness from the business array
+                            for (int i = 0; i < businessesArray.length(); i++) {
+                                JSONObject businessJO = businessesArray.getJSONObject(i);
+                                Business business = createBusinessFromSearch(businessJO);
+                                businessList.add(business);
+                                mTestView.setText("VOLLEY: " +business.toString());
+                                mProgressDialog.hide();
+                            }
+                        } catch (JSONException e) {
+                            Log.d(LOG_TAG, e.toString());
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        mTestView.setText("VOLLEY ERROR: " + error.getMessage());
+                        mProgressDialog.hide();
+                    }
+                })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                // TODO: Authentication
+                headers.put(getString(R.string.request_header_key),
+                        getString(R.string.request_header_value) + " " + getString(R.string.yelp_api_key));
+                return headers;
+            }
+        };
+        VolleyQueueSingleton
+                .getInstance(getActivity()
+                .getApplicationContext())
+                .addToRequestQueue(jsonObjReq, tag_json_obj_search);
+    }
+
+
+    // TODO: implement autocomplete query everytime user enters a new character
+    private void runAutocompleteQuery(String endpoint, HashMap<String,String> parameters) {
+        String tag_json_obj_autocomp = "json_obj_autocomp_req";
+
+        String url = getURL(endpoint, parameters);
+        Log.d(LOG_TAG, "URL: " + url);
+
+        mProgressDialog.setMessage(getString(R.string.loading_request));
+        mProgressDialog.show();
+
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
+                url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
                         mTestView.setText("VOLLEY: " +response.toString());
                         mProgressDialog.hide();
                     }
@@ -235,9 +280,72 @@ public class EmptyFragment extends Fragment {
         };
         VolleyQueueSingleton
                 .getInstance(getActivity()
-                .getApplicationContext())
-                .addToRequestQueue(jsonObjReq, tag_json_obj);
+                        .getApplicationContext())
+                .addToRequestQueue(jsonObjReq, tag_json_obj_autocomp);
     }
+
+
+    // TODO: takes in a jsonOBject and instantiates the Business object using its values
+    public Business createBusinessFromSearch(JSONObject businessJO) {
+        Business newBusiness = new Business();
+        try {
+            newBusiness.mId = businessJO.getString("id");
+            newBusiness.mAlias = businessJO.getString("alias");
+            newBusiness.mName = businessJO.getString("name");
+            newBusiness.mImageUrl = businessJO.getString("image_url");
+            newBusiness.mIsClosed = businessJO.getBoolean("is_closed");
+            newBusiness.mUrl = businessJO.getString("url");
+            newBusiness.mPhone = businessJO.getString("phone");
+            newBusiness.mReviewCount = businessJO.getInt("review_count");
+            newBusiness.mRating = (String) String.valueOf(businessJO.getDouble("rating"));
+
+            // Getting Categories from each business
+            JSONArray categoriesArray = (JSONArray) businessJO.get("categories");
+            if (categoriesArray.length() <= 0) {
+                newBusiness.mCategories = "No categories";
+            } else {
+                if (categoriesArray.length() > 1) {
+                    // get every category, up to the second to last one
+                    for (int j = 0; j < categoriesArray.length()-1; j++) {
+                        JSONObject category = categoriesArray.getJSONObject(j);
+                        String title = category.getString("title");
+                        newBusiness.mCategories = newBusiness.mCategories.concat(title + ", ");
+                    }
+                }
+                // add the last category if more than 1, or the only category if only 1
+                JSONObject category = categoriesArray.getJSONObject(categoriesArray.length()-1);
+                String title = category.getString("title");
+                newBusiness.mCategories = newBusiness.mCategories.concat(title);
+            }
+
+            // Getting Location from each business
+            JSONObject locationObject = (JSONObject) businessJO.get("location");
+            String address1 = locationObject.getString("address1");
+            String address2 = locationObject.getString("address2");
+            String address3 = locationObject.getString("address3");
+            String city = locationObject.getString("city");
+            String state = locationObject.getString("state");
+            String zipcode = locationObject.getString("zip_code");
+            String country = locationObject.getString("country");
+            newBusiness.setBusinessAddress(address1, address2, address3, city, state, zipcode,
+                    country);
+
+            // Getting Coordinates from each business
+            JSONObject coordinatesObject = (JSONObject) businessJO.get("coordinates");
+            double latitude = coordinatesObject.getDouble("latitude");
+            double longitude = coordinatesObject.getDouble("longitude");
+            newBusiness.mLatitude = latitude;
+            newBusiness.mLongitude = longitude;
+
+            newBusiness.mPrice = businessJO.getString("price");
+
+        } catch (JSONException e) {
+            Log.d(LOG_TAG, e.toString());
+        }
+
+        return newBusiness;
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this

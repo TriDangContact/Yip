@@ -1,6 +1,10 @@
 package com.android.yip;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
@@ -41,15 +45,53 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mName.setText("Business Name: really long text that should be able to scroll" + position);
-        holder.mAddress.setText("Address: " + position);
-        holder.mCategory.setText("Category: " +position);
-//        holder.mAddress.setText(holder.mItem.mAddress);
+        holder.mName.setText(holder.mItem.mName);
+//        String address =
+//                holder.mItem.mAddress1 + ", " + holder.mItem.mCity + ", " + holder.mItem.mState + " " + holder.mItem.mZipcode + ", " + holder.mItem.mCountry;
+        holder.mReviews.setText(String.valueOf(holder.mItem.mReviewCount));
+        holder.mAddress.setText(holder.mItem.mAddress);
+        holder.mCategory.setText(holder.mItem.mCategories);
+
         // TODO: create a loadProfileImage method to create a bitmap from the item's image url
-//        holder.mContentView.setText(mValues.get(position).content);
-        // TODO: create a loadRatings method to set the stars image of the item based on its rating
-//        String rating = mValues.get(position).rating;
-//        loadRatings(rating);
+//        Bitmap image = loadImage(holder.mItem.mImageUrl);
+//        holder.mPicture.setImageBitmap(image);
+
+        // Set the appropriate stars drawable based on a business' rating
+        String rating = holder.mItem.mRating;
+        switch (rating) {
+            case "0.0":
+                holder.mRating.setImageResource(R.drawable.stars_small_0);
+                break;
+            case "1.0":
+                holder.mRating.setImageResource(R.drawable.stars_small_1);
+                break;
+            case "1.5":
+                holder.mRating.setImageResource(R.drawable.stars_small_1_half);
+                break;
+            case "2.0":
+                holder.mRating.setImageResource(R.drawable.stars_small_2);
+                break;
+            case "2.5":
+                holder.mRating.setImageResource(R.drawable.stars_small_2_half);
+                break;
+            case "3.0":
+                holder.mRating.setImageResource(R.drawable.stars_small_3);
+                break;
+            case "3.5":
+                holder.mRating.setImageResource(R.drawable.stars_small_3_half);
+                break;
+            case "4.0":
+                holder.mRating.setImageResource(R.drawable.stars_small_4);
+                break;
+            case "4.5":
+                holder.mRating.setImageResource(R.drawable.stars_small_4_half);
+                break;
+            case "5.0":
+                holder.mRating.setImageResource(R.drawable.stars_small_5);
+                break;
+            default:
+                break;
+        }
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,16 +112,12 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
 
 
     // TODO: create bitmap so it can be used to set the profile image
-//    public Bitmap loadProfileImage(String url) {
+//    public Bitmap loadImage(String url) {
 //        Bitmap bm = new Bitmap();
 //        Use Glide library to load image from URL
 //        return bm;
 //    }
 
-    // TODO: load the correct stars image based on a rating
-    public void loadRatings(String rating) {
-        // bunch of case statements
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;

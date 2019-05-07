@@ -31,6 +31,7 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
     private BottomNavigationView mBottomNavigationView;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
     private Toolbar mToolbar;
+    private SearchView mSearchView;
 
 
     @Override
@@ -52,11 +53,11 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
                         return true;
                     case R.id.navigation_search:
 
-                        // TODO: create a temporary list of business to display
-                        ContentList list = ContentList.get(HomeActivity.this);
-                        List<Business> businessList = list.getBusinesses();
-                        Business business = new Business();
-                        businessList.add(business);
+//                        // TODO: create a temporary list of business to display
+//                        ContentList list = ContentList.get(HomeActivity.this);
+//                        List<Business> businessList = list.getBusinesses();
+//                        Business business = new Business();
+//                        businessList.add(business);
 
 
                         displaySearchFragment();
@@ -82,10 +83,24 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
         // Associate searchable configuration with the SearchView
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
+        mSearchView =
                 (SearchView) menu.findItem(R.id.action_search).getActionView();
-        searchView.setSearchableInfo(
+        mSearchView.setQueryHint(getString(R.string.search_bar_hint));
+        mSearchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // TODO: perform the query
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // TODO: display suggestions
+                return false;
+            }
+        });
 
         return true;
     }
@@ -94,6 +109,7 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
+                // TODO: display the search dialog
                 return true;
             default:
                 // If we got here, the user's action was not recognized.
@@ -104,7 +120,8 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
 
     @Override
     public void onSearchListFragmentInteraction(Business item) {
-        Toast.makeText(HomeActivity.this, "Selected: " + item.mName, Toast.LENGTH_SHORT).show();
+        Toast.makeText(HomeActivity.this, "Selected: " + item.mName,
+                Toast.LENGTH_SHORT).show();
 
         // TODO: start a new activity that displays the business details
         displayBusinessDetail(item.mId);

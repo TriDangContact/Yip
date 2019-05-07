@@ -6,13 +6,15 @@
     <string name="search_title">Search for Businesses</string>
     <string name="search_hint">Dominos, Pizza Hut, etc.</string>
     <string name="empty_list">Empty List.</string>
+
+    <string name="search_bar_hint">Pizza, Sushi, etc...</string>
     <string name="search_item_review">Reviews</string>
 
     <string name="request_protocol">https</string>
     <string name="request_header_key">Authorization</string>
     <string name="request_header_value">Bearer</string>
     <string name="loading_request">Getting Request...</string>
-    <string name="yelp_api_key">VnI34nhRvMkQX8AniZeKqvQCj-pahO3sTvdrmu_nDVTSBDBQHTQUJQxEgvNNTnk_ApqnqfzL38vCqSWvBZWBnTsFBKfpPi3JLSsYtpkh3BS0cnfWB5jB4cLMHNrIXHYx</string>
+
     <string name="yelp_api_domain">api.yelp.com</string>
     <string name="yelp_endpoint_autocomplete">v3/autocomplete</string>
     <string name="yelp_endpoint_business">v3/businesses/</string>
