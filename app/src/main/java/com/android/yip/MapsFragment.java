@@ -1,6 +1,7 @@
 package com.android.yip;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -30,6 +31,7 @@ import java.util.List;
 public class MapsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String EXTRA_ID = "com.android.yip.id";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
@@ -116,14 +118,15 @@ public class MapsFragment extends Fragment {
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(startingSpot));
                 }
 
+                // make the map utilize our custom info window
                 mMap.setInfoWindowAdapter(new MapsCustomInfoWindowAdapter(getContext()));
 
+                // display the business detail for that marker when the info window is clicked
                 mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
                     public void onInfoWindowClick(Marker marker) {
-                        Toast.makeText(getContext(),
-                                "Marker: " +marker.getTitle() + ", Tag: " + marker.getTag(),
-                                Toast.LENGTH_SHORT).show();
+                        Business business = (Business) marker.getTag();
+                        displayBusinessDetail(business.mId);
                     }
                 });
             }
@@ -156,6 +159,12 @@ public class MapsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void displayBusinessDetail(String id) {
+        Intent intent = new Intent(getContext(), BusinessDetailActivity.class);
+        intent.putExtra(EXTRA_ID, id);
+        startActivity(intent);
     }
 
 

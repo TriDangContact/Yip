@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,7 +100,8 @@ public class EmptyFragment extends Fragment {
         mTestBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String endpoint = getString(R.string.yelp_endpoint_business_search);
+                String endpoint =
+                        getString(R.string.yelp_endpoint_business) + getString(R.string.yelp_endpoint_business_search);
                 String location = "San Diego, CA";
                 String text = mEditText.getText().toString();
 
@@ -200,7 +202,7 @@ public class EmptyFragment extends Fragment {
                         // TODO: instantiate Business object using response, and add Business
                         // object to BusinessList
 
-                        ContentList list = ContentList.get(getActivity());
+                        ContentList list = ContentList.get(getContext());
                         List<Business> businessList = list.getBusinesses();
                         businessList.clear();
                         try {
@@ -209,7 +211,7 @@ public class EmptyFragment extends Fragment {
                             // getting every bussiness from the business array
                             for (int i = 0; i < businessesArray.length(); i++) {
                                 JSONObject businessJO = businessesArray.getJSONObject(i);
-                                Business business = createBusinessFromSearch(businessJO);
+                                Business business = new Business(businessJO, getContext());
                                 businessList.add(business);
                                 mTestView.setText("VOLLEY: " +business.toString());
                                 mProgressDialog.hide();
@@ -222,7 +224,8 @@ public class EmptyFragment extends Fragment {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        mTestView.setText("VOLLEY ERROR: " + error.getMessage());
+                        String message = getString(R.string.volley_error) + error.getMessage();
+                        mTestView.setText(message);
                         mProgressDialog.hide();
                     }
                 })
@@ -237,11 +240,9 @@ public class EmptyFragment extends Fragment {
             }
         };
         VolleyQueueSingleton
-                .getInstance(getActivity()
-                .getApplicationContext())
+                .getInstance(getContext())
                 .addToRequestQueue(jsonObjReq, tag_json_obj_search);
     }
-
 
     // TODO: implement autocomplete query everytime user enters a new character
     private void runAutocompleteQuery(String endpoint, HashMap<String,String> parameters) {
@@ -264,7 +265,8 @@ public class EmptyFragment extends Fragment {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        mTestView.setText("VOLLEY ERROR: " + error.getMessage());
+                        String message = getString(R.string.volley_error) + error.getMessage();
+                        mTestView.setText(message);
                         mProgressDialog.hide();
                     }
                 })
@@ -279,76 +281,284 @@ public class EmptyFragment extends Fragment {
             }
         };
         VolleyQueueSingleton
-                .getInstance(getContext()
-                        .getApplicationContext())
+                .getInstance(getContext())
                 .addToRequestQueue(jsonObjReq, tag_json_obj_autocomp);
     }
 
 
     // TODO: takes in a jsonOBject and instantiates the Business object using its values
-    public Business createBusinessFromSearch(JSONObject businessJO) {
-        Business newBusiness = new Business();
-        try {
-            newBusiness.mId = businessJO.getString("id");
-            newBusiness.mAlias = businessJO.getString("alias");
-            newBusiness.mName = businessJO.getString("name");
+//    public Business createBusinessFromJSON(JSONObject businessJO) {
+//        Business newBusiness = new Business();
+//
+//        newBusiness.setBusinessId(businessJO);
+//        newBusiness.setBusinessAlias(businessJO);
+//        newBusiness.setBusinessName(businessJO);
+//        newBusiness.setBusinessImageUrl(businessJO);
+//        if (newBusiness.mImageUrl != null && !newBusiness.mImageUrl.equals("null")) {
+//            newBusiness.setBusinessImage(newBusiness.mImageUrl, getContext());
+//        }
+//        newBusiness.setBusinessIsClosed(businessJO);
+//        newBusiness.setBusinessUrl(businessJO);
+//        newBusiness.setBusinessPhone(businessJO);
+//        newBusiness.setBusinessDisplayPhone(businessJO);
+//        newBusiness.setBusinessReviewCount(businessJO);
+//        newBusiness.setBusinessRating(businessJO);
+//        newBusiness.setBusinessPrice(businessJO);
+//        newBusiness.setBusinessAddress(businessJO);
+//        newBusiness.setBusinessCategories(businessJO);
+//        newBusiness.setBusinessCoordinates(businessJO);
+//        newBusiness.setBusinessPhotos(businessJO);
+//        newBusiness.setBusinessHours(businessJO);
+//
+//        return newBusiness;
+//    }
 
-            String imageUrl = businessJO.getString("image_url");
-            newBusiness.mImageUrl = imageUrl;
-            newBusiness.setBusinessImage(imageUrl, getContext());
+    ////////////// RETRIEVING DATA FROM JSONOBJECTS //////////////////////
+//    public String getBusinessId(JSONObject businessJO) {
+//        String id;
+//        try {
+//            id = businessJO.getString("id");
+//        } catch (JSONException exception) {
+//            Log.d(LOG_TAG, exception.toString());
+//            id = "";
+//        }
+//        return id;
+//    }
+//
+//    public String getBusinessAlias(JSONObject businessJO) {
+//        String alias;
+//        try {
+//            alias = businessJO.getString("alias");
+//        } catch (JSONException exception) {
+//            Log.d(LOG_TAG, exception.toString());
+//            alias = "Error retrieving alias";
+//        }
+//        return alias;
+//    }
+//
+//    public String getBusinessName(JSONObject businessJO) {
+//        String name;
+//        try {
+//            name = businessJO.getString("name");
+//        } catch (JSONException exception) {
+//            Log.d(LOG_TAG, exception.toString());
+//            name = "Error retrieving name";
+//        }
+//        return name;
+//    }
+//    public String getBusinessImageUrl(JSONObject businessJO) {
+//        String imageUrl;
+//        try {
+//            imageUrl = businessJO.getString("image_url");
+//        } catch (JSONException exception) {
+//            Log.d(LOG_TAG, exception.toString());
+//            imageUrl = "null";
+//        }
+//        return imageUrl;
+//    }
+//
+//    public boolean getBusinessIsClosed(JSONObject businessJO) {
+//        boolean isClosed;
+//        try {
+//            isClosed = businessJO.getBoolean("is_closed");
+//        } catch (JSONException exception) {
+//            Log.d(LOG_TAG, exception.toString());
+//            isClosed = false;
+//        }
+//        return isClosed;
+//    }
+//
+//    public String getBusinessUrl(JSONObject businessJO) {
+//        String url;
+//        try {
+//            url = businessJO.getString("url");
+//        } catch (JSONException exception) {
+//            Log.d(LOG_TAG, exception.toString());
+//            url = "Error retrieving url";
+//        }
+//        return url;
+//    }
+//
+//    public String getBusinessPhone(JSONObject businessJO) {
+//        String phone;
+//        try {
+//            phone = businessJO.getString("phone");
+//        } catch (JSONException exception) {
+//            Log.d(LOG_TAG, exception.toString());
+//            phone = "";
+//        }
+//        return phone;
+//    }
+//
+//    public String getBusinessDisplayPhone(JSONObject businessJO) {
+//        String displayPhone;
+//        try {
+//            displayPhone = businessJO.getString("display_phone");
+//        } catch (JSONException exception) {
+//            Log.d(LOG_TAG, exception.toString());
+//            displayPhone = "";
+//        }
+//        return displayPhone;
+//    }
+//
+//    public int getBusinessReviewCount(JSONObject businessJO) {
+//        int reviewCount = 0;
+//        try {
+//            reviewCount = businessJO.getInt("review_count");
+//        } catch (JSONException exception) {
+//            Log.d(LOG_TAG, exception.toString());
+//        }
+//        return reviewCount;
+//    }
+//
+//    public String getBusinessRating(JSONObject businessJO) {
+//        String rating = "0.0";
+//        try {
+//            rating = (String) String.valueOf(businessJO.getDouble("rating"));
+//        } catch (JSONException exception) {
+//            Log.d(LOG_TAG, exception.toString());
+//        }
+//        return rating;
+//    }
+//
+//    public String getBusinessPrice(JSONObject businessJO) {
+//        String price;
+//        try {
+//            price = businessJO.getString("price");
+//        } catch (JSONException exception) {
+//            Log.d(LOG_TAG, exception.toString());
+//            price = "Error retrieving price";
+//        }
+//        return price;
+//    }
+//
+//    public String getBusinessAddress(JSONObject businessJO) {
+//        String address1 = "";
+//        String address2 = "";
+//        String address3 = "";
+//        String city = "";
+//        String state = "";
+//        String zipcode = "";
+//        String country = "";
+//        String address = "";
+//
+//        try {
+//            JSONObject locationObject = (JSONObject) businessJO.get("location");
+//            address1 = locationObject.getString("address1");
+//            address2 = locationObject.getString("address2");
+//            address3 = locationObject.getString("address3");
+//            city = locationObject.getString("city");
+//            state = locationObject.getString("state");
+//            zipcode = locationObject.getString("zip_code");
+//            country = locationObject.getString("country");
+//        } catch (JSONException exception) {
+//            Log.d(LOG_TAG, exception.toString());
+//        }
+//
+//        if (address1 != null && !address1.equals("null") && !address1.isEmpty()) {
+//            address = address + address1;
+//        }
+//        if (address2 != null && !address2.equals("null") && !address2.isEmpty()) {
+//            address = address + ", " + address2;
+//        }
+//        if (address3 != null && !address3.equals("null") && !address3.isEmpty()) {
+//            address = address + ", " + address3;
+//        }
+//        if (city != null && !city.equals("null") && !city.isEmpty()) {
+//            address = address + ", " + city;
+//        }
+//        if (state != null && !state.equals("null") && !state.isEmpty()) {
+//            address = address + ", " + state;
+//        }
+//        if (zipcode != null && !zipcode.equals("null") && !zipcode.isEmpty()) {
+//            address = address + " " + zipcode;
+//        }
+//        if (country != null && !country.equals("null") && !country.isEmpty()) {
+//            address = address + ", " + country;
+//        }
+//
+//        return address;
+//    }
+//
+//    // Getting Categories from each business
+//    public String getBusinessCategories(JSONObject businessJO) {
+//        String categories = "";
+//        try {
+//            JSONArray categoriesArray = (JSONArray) businessJO.get("categories");
+//            if (categoriesArray.length() <= 0) {
+//                categories = "No categories";
+//            } else {
+//                if (categoriesArray.length() > 1) {
+//                    // get every category, up to the second to last one
+//                    for (int j = 0; j < categoriesArray.length() - 1; j++) {
+//                        JSONObject category = categoriesArray.getJSONObject(j);
+//                        String title = category.getString("title");
+//                        categories = categories.concat(title + ", ");
+//                    }
+//                }
+//                // add the last category if more than 1, or the only category if only 1
+//                JSONObject category = categoriesArray.getJSONObject(categoriesArray.length() - 1);
+//                String title = category.getString("title");
+//                categories = categories.concat(title);
+//            }
+//        } catch (JSONException exception) {
+//            Log.d(LOG_TAG, exception.toString());
+//            categories = "Error retrieving categories";
+//        }
+//        return categories;
+//    }
+//
+//    public double[] getBusinessCoordinates(JSONObject businessJO) {
+//        double coordinates[] = {0.0, 0.0};
+//        try {
+//            JSONObject coordinatesObject = (JSONObject) businessJO.get("coordinates");
+//            coordinates[0] = coordinatesObject.getDouble("latitude");
+//            coordinates[1] = coordinatesObject.getDouble("longitude");
+//        } catch (JSONException exception) {
+//            Log.d(LOG_TAG, exception.toString());
+//        }
+//        return coordinates;
+//    }
+//
+//    public ArrayList<String> getBusinessPhotos(JSONObject businessJO) {
+//        ArrayList<String> photos = new ArrayList<>();
+//        try {
+//            JSONArray photosArray = (JSONArray) businessJO.getJSONArray("photos");
+//            if (photosArray != null) {
+//                for (int i = 0; i < photosArray.length(); i++) {
+//                    photos.add(photosArray.get(i).toString());
+//                }
+//            }
+//        } catch (JSONException exception) {
+//            Log.d(LOG_TAG, exception.toString());
+//        }
+//        return photos;
+//    }
+//
+//    public ArrayList<JSONObject> getBusinessHours(JSONObject businessJO) {
+//        ArrayList<JSONObject> hours = new ArrayList<>();
+//        try {
+//            JSONArray hoursArray = (JSONArray) businessJO.getJSONArray("hours");
+//            if (hoursArray != null) {
+//                for (int i = 0; i < hoursArray.length(); i++) {
+//                    JSONObject hoursObject = (JSONObject) hoursArray.get(i);
+//                    JSONArray openArray = (JSONArray) hoursObject.get("open");
+//                    if (openArray != null) {
+//                        for (int j = 0; j < openArray.length(); j++) {
+//                            JSONObject dayObject = (JSONObject) openArray.get(j);
+//                            hours.add(dayObject);
+//                        }
+//                    }
+//                }
+//            }
+//        } catch (JSONException exception) {
+//            Log.d(LOG_TAG, exception.toString());
+//        }
+//        return hours;
+//    }
 
-            newBusiness.mIsClosed = businessJO.getBoolean("is_closed");
-            newBusiness.mUrl = businessJO.getString("url");
-            newBusiness.mPhone = businessJO.getString("phone");
-            newBusiness.mReviewCount = businessJO.getInt("review_count");
-            newBusiness.mRating = (String) String.valueOf(businessJO.getDouble("rating"));
 
-            // Getting Categories from each business
-            JSONArray categoriesArray = (JSONArray) businessJO.get("categories");
-            if (categoriesArray.length() <= 0) {
-                newBusiness.mCategories = "No categories";
-            } else {
-                if (categoriesArray.length() > 1) {
-                    // get every category, up to the second to last one
-                    for (int j = 0; j < categoriesArray.length()-1; j++) {
-                        JSONObject category = categoriesArray.getJSONObject(j);
-                        String title = category.getString("title");
-                        newBusiness.mCategories = newBusiness.mCategories.concat(title + ", ");
-                    }
-                }
-                // add the last category if more than 1, or the only category if only 1
-                JSONObject category = categoriesArray.getJSONObject(categoriesArray.length()-1);
-                String title = category.getString("title");
-                newBusiness.mCategories = newBusiness.mCategories.concat(title);
-            }
 
-            // Getting Location from each business
-            JSONObject locationObject = (JSONObject) businessJO.get("location");
-            String address1 = locationObject.getString("address1");
-            String address2 = locationObject.getString("address2");
-            String address3 = locationObject.getString("address3");
-            String city = locationObject.getString("city");
-            String state = locationObject.getString("state");
-            String zipcode = locationObject.getString("zip_code");
-            String country = locationObject.getString("country");
-            newBusiness.setBusinessAddress(address1, address2, address3, city, state, zipcode,
-                    country);
-
-            // Getting Coordinates from each business
-            JSONObject coordinatesObject = (JSONObject) businessJO.get("coordinates");
-            double latitude = coordinatesObject.getDouble("latitude");
-            double longitude = coordinatesObject.getDouble("longitude");
-            newBusiness.mLatitude = latitude;
-            newBusiness.mLongitude = longitude;
-
-            newBusiness.mPrice = businessJO.getString("price");
-
-        } catch (JSONException e) {
-            Log.d(LOG_TAG, e.toString());
-        }
-
-        return newBusiness;
-    }
 
 
     /**

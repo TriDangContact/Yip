@@ -1,28 +1,16 @@
 package com.android.yip;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.android.yip.dummy.DummyContent.DummyItem;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Business} and makes a call to the
  * specified {@link com.android.yip.SearchListFragment.OnSearchListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
@@ -52,46 +40,8 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
         holder.mReviews.setText(String.valueOf(holder.mItem.mReviewCount));
         holder.mAddress.setText(holder.mItem.mAddress);
         holder.mCategory.setText(holder.mItem.mCategories);
-
         holder.mPicture.setImageBitmap(holder.mItem.mImage);
-
-        // Set the appropriate stars drawable based on a business' rating
-        String rating = holder.mItem.mRating;
-        switch (rating) {
-            case "0.0":
-                holder.mRating.setImageResource(R.drawable.stars_small_0);
-                break;
-            case "1.0":
-                holder.mRating.setImageResource(R.drawable.stars_small_1);
-                break;
-            case "1.5":
-                holder.mRating.setImageResource(R.drawable.stars_small_1_half);
-                break;
-            case "2.0":
-                holder.mRating.setImageResource(R.drawable.stars_small_2);
-                break;
-            case "2.5":
-                holder.mRating.setImageResource(R.drawable.stars_small_2_half);
-                break;
-            case "3.0":
-                holder.mRating.setImageResource(R.drawable.stars_small_3);
-                break;
-            case "3.5":
-                holder.mRating.setImageResource(R.drawable.stars_small_3_half);
-                break;
-            case "4.0":
-                holder.mRating.setImageResource(R.drawable.stars_small_4);
-                break;
-            case "4.5":
-                holder.mRating.setImageResource(R.drawable.stars_small_4_half);
-                break;
-            case "5.0":
-                holder.mRating.setImageResource(R.drawable.stars_small_5);
-                break;
-            default:
-                break;
-        }
-
+        setRatingsDrawable(holder.mItem.mRating, holder.mRating);
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,6 +57,43 @@ public class SearchRecyclerViewAdapter extends RecyclerView.Adapter<SearchRecycl
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    public void setRatingsDrawable(String rating, ImageView mRating) {
+        switch (rating) {
+            case "0.0":
+                mRating.setImageResource(R.drawable.stars_small_0);
+                break;
+            case "1.0":
+                mRating.setImageResource(R.drawable.stars_small_1);
+                break;
+            case "1.5":
+                mRating.setImageResource(R.drawable.stars_small_1_half);
+                break;
+            case "2.0":
+                mRating.setImageResource(R.drawable.stars_small_2);
+                break;
+            case "2.5":
+                mRating.setImageResource(R.drawable.stars_small_2_half);
+                break;
+            case "3.0":
+                mRating.setImageResource(R.drawable.stars_small_3);
+                break;
+            case "3.5":
+                mRating.setImageResource(R.drawable.stars_small_3_half);
+                break;
+            case "4.0":
+                mRating.setImageResource(R.drawable.stars_small_4);
+                break;
+            case "4.5":
+                mRating.setImageResource(R.drawable.stars_small_4_half);
+                break;
+            case "5.0":
+                mRating.setImageResource(R.drawable.stars_small_5);
+                break;
+            default:
+                break;
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

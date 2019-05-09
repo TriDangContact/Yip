@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context="com.android.yip.BusinessDetailActivity">
+
+    <RelativeLayout
+        android:id="@+id/business_detail_rl_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal">
+
+        <!-- place any new widgets below here -->
+
+        <ImageView
+            android:id="@+id/business_detail_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:contentDescription="@string/fm_search_item_business_image_description"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_icon" />
+
+        <RelativeLayout
+            android:id="@+id/business_detail_rl_main_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/business_detail_image"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp">
+
+            <HorizontalScrollView
+                android:id="@+id/business_detail_scroll_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/search_item_business_text_scroll_bottom_margin"
+                android:layout_marginEnd="@dimen/search_item_business_text_scroll_bottom_margin"
+                android:scrollbars="none">
+
+                <TextView
+                    android:id="@+id/business_detail_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:textStyle="bold"
+                    tools:text="item_1_name" />
+
+            </HorizontalScrollView>
+
+            <ImageView
+                android:id="@+id/business_detail_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/business_detail_scroll_1"
+                android:layout_alignParentEnd="false"
+                android:layout_marginTop="@dimen/search_item_business_rating_image_margin"
+                android:layout_marginBottom="@dimen/search_item_business_rating_image_margin"
+                android:contentDescription="@string/fm_search_item_rating_description"
+                android:src="@drawable/stars_small_5" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/business_detail_rating"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/business_detail_rating">
+
+                <TextView
+                    android:id="@+id/business_detail_review_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/search_item_business_review_text"
+                    tools:text="12345" />
+
+                <TextView
+                    android:id="@+id/business_detail_reviews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/search_item_review"
+                    android:textSize="@dimen/search_item_business_review_text" />
+
+            </LinearLayout>
+
+
+            <HorizontalScrollView
+                android:id="@+id/business_detail_scroll_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/business_detail_rating"
+                android:layout_marginEnd="@dimen/search_item_business_text_scroll_bottom_margin"
+                android:layout_marginBottom="5dp"
+                android:scrollbars="none">
+
+                <TextView
+                    android:id="@+id/business_detail_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    tools:text="item_1_category, , This text should be really really really long to test where the margins are" />
+
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/business_detail_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/business_detail_scroll_2"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="$$$$" />
+
+            <TextView
+                android:id="@+id/business_detail_isclosed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/business_detail_price"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="Closed" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/business_detail_rl_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/business_detail_rl_main_info"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:id="@+id/business_detail_address_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="15dp"
+                android:src="@drawable/ic_action_direction" />
+
+            <HorizontalScrollView
+                android:id="@+id/business_detail_scroll_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="@dimen/search_item_business_text_scroll_bottom_margin"
+                android:layout_marginBottom="5dp"
+                android:layout_toEndOf="@id/business_detail_address_icon"
+                android:scrollbars="none">
+
+                <TextView
+                    android:id="@+id/business_detail_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    tools:text="item_1_address, This text should be really really really long to test where the margins are" />
+
+            </HorizontalScrollView>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/business_detail_rl_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/business_detail_rl_address"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:id="@+id/business_detail_phone_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="15dp"
+                android:src="@drawable/ic_action_phone" />
+
+            <TextView
+                android:id="@+id/business_detail_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="@dimen/search_item_business_text_scroll_bottom_margin"
+                android:layout_marginBottom="5dp"
+                android:layout_toEndOf="@id/business_detail_phone_icon"
+                tools:text="(619) 123-4567" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/business_detail_rl_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/business_detail_rl_phone"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp">
+
+            <ImageView
+                android:id="@+id/business_detail_url_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="15dp"
+                android:src="@drawable/ic_action_url" />
+
+            <HorizontalScrollView
+                android:id="@+id/business_detail_scroll_url"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="@dimen/search_item_business_text_scroll_bottom_margin"
+                android:layout_marginBottom="5dp"
+                android:layout_toEndOf="@id/business_detail_url_icon"
+                android:scrollbars="none">
+
+                <TextView
+                    android:id="@+id/business_detail_url"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    tools:text="item_1_url, This text should be really really really long to test where the margins are" />
+
+            </HorizontalScrollView>
+
+        </RelativeLayout>
+
+        <!-- business hours will be programmatically added and placed here -->
+        <RelativeLayout
+            android:id="@+id/business_detail_rl_hours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/business_detail_rl_url"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp">
+
+            <TextView
+                android:id="@+id/business_detail_hours"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/business_detail_hours"/>
+
+        </RelativeLayout>
+
+
+        <!-- business photos will be programmatically added and placed here -->
+        <RelativeLayout
+            android:id="@+id/business_detail_rl_photos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/business_detail_rl_hours">
+            <HorizontalScrollView
+                android:id="@+id/business_detail_scroll_photos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+                <LinearLayout
+                    android:id="@+id/business_detail_linearlayout_photos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <!-- business photos will be programmatically added and placed here -->
+                </LinearLayout>
+            </HorizontalScrollView>
+        </RelativeLayout>
+
+
+        <!-- reviews will be programmatically added and placed here -->
+        <RelativeLayout
+            android:id="@+id/business_detail_rl_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/business_detail_rl_photos"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp">
+
+            <LinearLayout
+                android:id="@+id/business_detail_linearlayout_reviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/business_detail_review_user_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/profile_icon"/>
+
+                <TextView
+                    android:id="@+id/business_detail_review_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:textStyle="bold"
+                    tools:text="user_name" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/business_detail_linearlayout_reviews_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:orientation="horizontal"
+                android:layout_below="@+id/business_detail_linearlayout_reviews">
+
+                <ImageView
+                    android:id="@+id/business_detail_review_rating"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/fm_search_item_rating_description"
+                    android:src="@drawable/stars_small_5" />
+                <TextView
+                    android:id="@+id/business_detail_review_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    tools:text="review_date" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/business_detail_review_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/business_detail_linearlayout_reviews_rating"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="Went back again to this place since the last time i visited the bay area 5 months ago, and nothing has changed. Still the sketchy Mission, Still the cashier..." />
+        </RelativeLayout>
+
+
+        <!-- place any new widgets above here -->
+    </RelativeLayout>
+</ScrollView>
+

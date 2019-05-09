@@ -8,6 +8,7 @@ public class ContentList {
 
     private static ContentList sContentList;
     private static List<Business> mBusinessArrayList;
+    private static List<Review> mReviewArrayList;
 
     public static ContentList get(Context context){
         if (sContentList == null) {
@@ -19,14 +20,12 @@ public class ContentList {
 
     private ContentList(Context context){
         mBusinessArrayList = new ArrayList<Business>();
+        mReviewArrayList = new ArrayList<Review>();
     }
 
     public List<Business> getBusinesses(){ return mBusinessArrayList; }
 
-//    public List<User> getUsers(){ return mUserArrayList; }
-//
-//    public List<String> getHashtags(){
-//        return mHashtagArrayList;
-//    }
+    public List<Review> getReviews() { return mReviewArrayList; }
+
 }
 

@@ -34,6 +34,7 @@
             android:id="@+id/fm_search_item_scroll_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:scrollbars="none"
             android:layout_marginTop="@dimen/search_item_business_text_scroll_bottom_margin"
             android:layout_marginEnd="@dimen/search_item_business_text_scroll_bottom_margin"
             android:layout_toEndOf="@id/fm_business_image">
@@ -86,6 +87,7 @@
             android:id="@+id/fm_search_item_scroll_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:scrollbars="none"
             android:layout_marginEnd="@dimen/search_item_business_text_scroll_bottom_margin"
             android:layout_below="@+id/fm_business_review_count"
             android:layout_toEndOf="@id/fm_business_image">
@@ -103,6 +105,7 @@
             android:id="@+id/fm_search_item_scroll_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:scrollbars="none"
             android:layout_marginEnd="@dimen/search_item_business_text_scroll_bottom_margin"
             android:layout_below="@+id/fm_search_item_scroll_2"
             android:layout_toEndOf="@id/fm_business_image">

@@ -2,6 +2,7 @@ package com.android.yip;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -18,6 +19,8 @@ import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity implements SearchListFragment.OnSearchListFragmentInteractionListener, MapsFragment.OnMapsFragmentInteractionListener, EmptyFragment.OnEmptyFragmentInteractionListener {
     private static final String LOG_TAG = "HomeActivity";
+    private static final int REQUEST_REGISTER = 0;
+    private static final String EXTRA_ID = "com.android.yip.id";
     private static final String FRAGMENT_1 = "Fragment 1";
     private static final String FRAGMENT_2 = "Fragment 2";
     private static final String FRAGMENT_3 = "Fragment 3";
@@ -114,7 +117,7 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
 
     @Override
     public void onSearchListFragmentInteraction(Business item) {
-        Toast.makeText(HomeActivity.this, "Selected: " + item.mName,
+        Toast.makeText(HomeActivity.this, "Selected: " + item.mId,
                 Toast.LENGTH_SHORT).show();
 
         // TODO: start a new activity that displays the business details
@@ -169,8 +172,11 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
                 .commitAllowingStateLoss();
     }
 
+    // TODO: new intent to start activity, passing in the id
     private void displayBusinessDetail(String id) {
-        // TODO: new intent to start activity, passing in the id
+        Intent intent = new Intent(getApplicationContext(), BusinessDetailActivity.class);
+        intent.putExtra(EXTRA_ID, id);
+        startActivity(intent);
     }
 
 
