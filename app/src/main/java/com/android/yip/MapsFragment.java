@@ -29,13 +29,11 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class MapsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String LOG_TAG = "MapsFragment";
     private static final String EXTRA_ID = "com.android.yip.id";
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private static final String LOG_TAG = "MapsFragment";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -43,7 +41,6 @@ public class MapsFragment extends Fragment {
     private GoogleMap mMap;
 
     private OnMapsFragmentInteractionListener mListener;
-    private GoogleMap.OnInfoWindowClickListener mOnInfoWindowClickListener;
 
     public MapsFragment() {
         // Required empty public constructor

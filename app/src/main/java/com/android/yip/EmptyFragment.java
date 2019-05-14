@@ -99,6 +99,7 @@ public class EmptyFragment extends Fragment {
         mLocationInput = (EditText) view.findViewById(R.id.location_input);
         mSearchBtn = (Button) view.findViewById(R.id.search_btn);
         mTestView = (TextView) view.findViewById(R.id.no_list_text);
+
         mSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

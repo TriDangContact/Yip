@@ -49,14 +49,6 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
                         displayHomeFragment();
                         return true;
                     case R.id.navigation_search:
-
-//                        // TODO: create a temporary list of business to display
-//                        ContentList list = ContentList.get(HomeActivity.this);
-//                        List<Business> businessList = list.getBusinesses();
-//                        Business business = new Business();
-//                        businessList.add(business);
-
-
                         displaySearchFragment();
                         return true;
                     case R.id.navigation_map:
@@ -67,7 +59,6 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
             }
         };
         mBottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
 
         displayHomeFragment();
     }

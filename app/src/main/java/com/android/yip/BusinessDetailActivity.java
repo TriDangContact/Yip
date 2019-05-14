@@ -68,12 +68,8 @@ public class BusinessDetailActivity extends AppCompatActivity {
     private TextView mUrl;
     private LinearLayout mHoursLayout;
     private LinearLayout mPhotosLayout;
-
     private LinearLayout mReviewLayout;
-
-
     private ProgressDialog mProgressDialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,19 +97,22 @@ public class BusinessDetailActivity extends AppCompatActivity {
         mPhotosLayout = (LinearLayout) findViewById(R.id.business_detail_linearlayout_photos);
         mReviewLayout = (LinearLayout) findViewById(R.id.business_detail_ll_review);
 
-        // retrieve the business data using passed in business id
+        // user must wait for business details to be retrieved from API
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.show();
 
+        // configuring api endpoints
         String endpoint = getString(R.string.yelp_endpoint_business) + mBusinessId;
         String reviewEndpoint = endpoint + getString(R.string.yelp_endpoint_business_reviews);
         String locale = "";
 
-        HashMap<String, String> parameters = new HashMap<>();
         // Build the URI using various parameters
+        HashMap<String, String> parameters = new HashMap<>();
         if (!locale.isEmpty()) {
             parameters.put(getString(R.string.yelp_parameters_business_search_locale), locale);
         }
+
+        // retrieve the business data using passed in business id
         runBusinessQuery(endpoint, parameters);
         runReviewQuery(reviewEndpoint, parameters);
 
@@ -137,7 +136,6 @@ public class BusinessDetailActivity extends AppCompatActivity {
                 openWebPage(mUrl.getText().toString());
             }
         });
-
     }
 
     /**
@@ -264,7 +262,9 @@ public class BusinessDetailActivity extends AppCompatActivity {
         mName.setText(business.mName);
         setTitle(business.mName);
         loadImage(business.mImageUrl, mPicture);
-        setRatingsDrawable(business.mRating, mRating);
+
+        RatingLoader ratingLoader = new RatingLoader();
+        ratingLoader.setRatingsDrawable(business.mRating, mRating);
         mReviewCount.setText(String.valueOf(business.mReviewCount));
         mCategories.setText(business.mCategories);
         mPrice.setText(business.mPrice);
@@ -284,43 +284,6 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
     private void setTitle(String title) {
         getSupportActionBar().setTitle(title);
-    }
-
-    private void setRatingsDrawable(String rating, ImageView mRating) {
-        switch (rating) {
-            case "0.0":
-                mRating.setImageResource(R.drawable.stars_small_0);
-                break;
-            case "1.0":
-                mRating.setImageResource(R.drawable.stars_small_1);
-                break;
-            case "1.5":
-                mRating.setImageResource(R.drawable.stars_small_1_half);
-                break;
-            case "2.0":
-                mRating.setImageResource(R.drawable.stars_small_2);
-                break;
-            case "2.5":
-                mRating.setImageResource(R.drawable.stars_small_2_half);
-                break;
-            case "3.0":
-                mRating.setImageResource(R.drawable.stars_small_3);
-                break;
-            case "3.5":
-                mRating.setImageResource(R.drawable.stars_small_3_half);
-                break;
-            case "4.0":
-                mRating.setImageResource(R.drawable.stars_small_4);
-                break;
-            case "4.5":
-                mRating.setImageResource(R.drawable.stars_small_4_half);
-                break;
-            case "5.0":
-                mRating.setImageResource(R.drawable.stars_small_5);
-                break;
-            default:
-                break;
-        }
     }
 
     private void loadImage(String url, ImageView imageView) {
@@ -471,7 +434,8 @@ public class BusinessDetailActivity extends AppCompatActivity {
                 ImageView reviewRatingView = new ImageView(this);
                 reviewRatingView.setLayoutParams(reviewRatingParams);
                 reviewRatingView.setContentDescription(getString(R.string.fm_search_item_rating_description));
-                setRatingsDrawable(reviewRating, reviewRatingView);
+                RatingLoader ratingLoader = new RatingLoader();
+                ratingLoader.setRatingsDrawable(reviewRating, reviewRatingView);
                 ratingInfoLL.addView(reviewRatingView);
 
 
