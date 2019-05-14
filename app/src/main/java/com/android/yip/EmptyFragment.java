@@ -48,8 +48,9 @@ public class EmptyFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private EditText mEditText;
-    private Button mTestBtn;
+    private EditText mSearchInput;
+    private EditText mLocationInput;
+    private Button mSearchBtn;
     private TextView mTestView;
     private ProgressDialog mProgressDialog;
 
@@ -94,25 +95,30 @@ public class EmptyFragment extends Fragment {
         mProgressDialog = new ProgressDialog(getActivity());
 
         // TODO: FOR TESTING
-        mEditText = (EditText) view.findViewById(R.id.text_input);
-        mTestBtn = (Button) view.findViewById(R.id.testing_btn);
+        mSearchInput = (EditText) view.findViewById(R.id.search_input);
+        mLocationInput = (EditText) view.findViewById(R.id.location_input);
+        mSearchBtn = (Button) view.findViewById(R.id.search_btn);
         mTestView = (TextView) view.findViewById(R.id.no_list_text);
-        mTestBtn.setOnClickListener(new View.OnClickListener() {
+        mSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String endpoint =
                         getString(R.string.yelp_endpoint_business) + getString(R.string.yelp_endpoint_business_search);
-                String location = "San Diego, CA";
-                String text = mEditText.getText().toString();
+                String location = mLocationInput.getText().toString();
+                if (location.isEmpty()) {
+                    location = getString(R.string.default_location);
+                }
+                String text = mSearchInput.getText().toString();
 
                 // Build the URI using various parameters
                 HashMap<String, String> parameters = new HashMap<>();
 
                 // business search parameters
                 // Req: term, location, lat/long (if location == null), limit, offset
-                parameters.put("term", text);
-                parameters.put("location", location);
-                parameters.put("limit", "10");
+                parameters.put(getString(R.string.yelp_parameters_business_search_term), text);
+                parameters.put(getString(R.string.yelp_parameters_business_search_location), location);
+                parameters.put(getString(R.string.yelp_parameters_business_search_limit), "10");
+//                parameters.put(getString(R.string.yelp_parameters_business_search_offset), "0");
 //              parameters.put("latitude", "32.775807");
 //              parameters.put("longitude", "-117.069864");
 
@@ -206,9 +212,10 @@ public class EmptyFragment extends Fragment {
                         List<Business> businessList = list.getBusinesses();
                         businessList.clear();
                         try {
-                            JSONArray businessesArray = (JSONArray) response.get("businesses");
+                            JSONArray businessesArray =
+                                    (JSONArray) response.get(getString(R.string.yelp_response_business_search));
 
-                            // getting every bussiness from the business array
+                            // getting every business from the business array
                             for (int i = 0; i < businessesArray.length(); i++) {
                                 JSONObject businessJO = businessesArray.getJSONObject(i);
                                 Business business = new Business(businessJO, getContext());
@@ -259,7 +266,7 @@ public class EmptyFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        mTestView.setText("VOLLEY: " +response.toString());
+                        mTestView.setText(R.string.volley_success);
                         mProgressDialog.hide();
                     }
                 }, new Response.ErrorListener() {
@@ -284,281 +291,6 @@ public class EmptyFragment extends Fragment {
                 .getInstance(getContext())
                 .addToRequestQueue(jsonObjReq, tag_json_obj_autocomp);
     }
-
-
-    // TODO: takes in a jsonOBject and instantiates the Business object using its values
-//    public Business createBusinessFromJSON(JSONObject businessJO) {
-//        Business newBusiness = new Business();
-//
-//        newBusiness.setBusinessId(businessJO);
-//        newBusiness.setBusinessAlias(businessJO);
-//        newBusiness.setBusinessName(businessJO);
-//        newBusiness.setBusinessImageUrl(businessJO);
-//        if (newBusiness.mImageUrl != null && !newBusiness.mImageUrl.equals("null")) {
-//            newBusiness.setBusinessImage(newBusiness.mImageUrl, getContext());
-//        }
-//        newBusiness.setBusinessIsClosed(businessJO);
-//        newBusiness.setBusinessUrl(businessJO);
-//        newBusiness.setBusinessPhone(businessJO);
-//        newBusiness.setBusinessDisplayPhone(businessJO);
-//        newBusiness.setBusinessReviewCount(businessJO);
-//        newBusiness.setBusinessRating(businessJO);
-//        newBusiness.setBusinessPrice(businessJO);
-//        newBusiness.setBusinessAddress(businessJO);
-//        newBusiness.setBusinessCategories(businessJO);
-//        newBusiness.setBusinessCoordinates(businessJO);
-//        newBusiness.setBusinessPhotos(businessJO);
-//        newBusiness.setBusinessHours(businessJO);
-//
-//        return newBusiness;
-//    }
-
-    ////////////// RETRIEVING DATA FROM JSONOBJECTS //////////////////////
-//    public String getBusinessId(JSONObject businessJO) {
-//        String id;
-//        try {
-//            id = businessJO.getString("id");
-//        } catch (JSONException exception) {
-//            Log.d(LOG_TAG, exception.toString());
-//            id = "";
-//        }
-//        return id;
-//    }
-//
-//    public String getBusinessAlias(JSONObject businessJO) {
-//        String alias;
-//        try {
-//            alias = businessJO.getString("alias");
-//        } catch (JSONException exception) {
-//            Log.d(LOG_TAG, exception.toString());
-//            alias = "Error retrieving alias";
-//        }
-//        return alias;
-//    }
-//
-//    public String getBusinessName(JSONObject businessJO) {
-//        String name;
-//        try {
-//            name = businessJO.getString("name");
-//        } catch (JSONException exception) {
-//            Log.d(LOG_TAG, exception.toString());
-//            name = "Error retrieving name";
-//        }
-//        return name;
-//    }
-//    public String getBusinessImageUrl(JSONObject businessJO) {
-//        String imageUrl;
-//        try {
-//            imageUrl = businessJO.getString("image_url");
-//        } catch (JSONException exception) {
-//            Log.d(LOG_TAG, exception.toString());
-//            imageUrl = "null";
-//        }
-//        return imageUrl;
-//    }
-//
-//    public boolean getBusinessIsClosed(JSONObject businessJO) {
-//        boolean isClosed;
-//        try {
-//            isClosed = businessJO.getBoolean("is_closed");
-//        } catch (JSONException exception) {
-//            Log.d(LOG_TAG, exception.toString());
-//            isClosed = false;
-//        }
-//        return isClosed;
-//    }
-//
-//    public String getBusinessUrl(JSONObject businessJO) {
-//        String url;
-//        try {
-//            url = businessJO.getString("url");
-//        } catch (JSONException exception) {
-//            Log.d(LOG_TAG, exception.toString());
-//            url = "Error retrieving url";
-//        }
-//        return url;
-//    }
-//
-//    public String getBusinessPhone(JSONObject businessJO) {
-//        String phone;
-//        try {
-//            phone = businessJO.getString("phone");
-//        } catch (JSONException exception) {
-//            Log.d(LOG_TAG, exception.toString());
-//            phone = "";
-//        }
-//        return phone;
-//    }
-//
-//    public String getBusinessDisplayPhone(JSONObject businessJO) {
-//        String displayPhone;
-//        try {
-//            displayPhone = businessJO.getString("display_phone");
-//        } catch (JSONException exception) {
-//            Log.d(LOG_TAG, exception.toString());
-//            displayPhone = "";
-//        }
-//        return displayPhone;
-//    }
-//
-//    public int getBusinessReviewCount(JSONObject businessJO) {
-//        int reviewCount = 0;
-//        try {
-//            reviewCount = businessJO.getInt("review_count");
-//        } catch (JSONException exception) {
-//            Log.d(LOG_TAG, exception.toString());
-//        }
-//        return reviewCount;
-//    }
-//
-//    public String getBusinessRating(JSONObject businessJO) {
-//        String rating = "0.0";
-//        try {
-//            rating = (String) String.valueOf(businessJO.getDouble("rating"));
-//        } catch (JSONException exception) {
-//            Log.d(LOG_TAG, exception.toString());
-//        }
-//        return rating;
-//    }
-//
-//    public String getBusinessPrice(JSONObject businessJO) {
-//        String price;
-//        try {
-//            price = businessJO.getString("price");
-//        } catch (JSONException exception) {
-//            Log.d(LOG_TAG, exception.toString());
-//            price = "Error retrieving price";
-//        }
-//        return price;
-//    }
-//
-//    public String getBusinessAddress(JSONObject businessJO) {
-//        String address1 = "";
-//        String address2 = "";
-//        String address3 = "";
-//        String city = "";
-//        String state = "";
-//        String zipcode = "";
-//        String country = "";
-//        String address = "";
-//
-//        try {
-//            JSONObject locationObject = (JSONObject) businessJO.get("location");
-//            address1 = locationObject.getString("address1");
-//            address2 = locationObject.getString("address2");
-//            address3 = locationObject.getString("address3");
-//            city = locationObject.getString("city");
-//            state = locationObject.getString("state");
-//            zipcode = locationObject.getString("zip_code");
-//            country = locationObject.getString("country");
-//        } catch (JSONException exception) {
-//            Log.d(LOG_TAG, exception.toString());
-//        }
-//
-//        if (address1 != null && !address1.equals("null") && !address1.isEmpty()) {
-//            address = address + address1;
-//        }
-//        if (address2 != null && !address2.equals("null") && !address2.isEmpty()) {
-//            address = address + ", " + address2;
-//        }
-//        if (address3 != null && !address3.equals("null") && !address3.isEmpty()) {
-//            address = address + ", " + address3;
-//        }
-//        if (city != null && !city.equals("null") && !city.isEmpty()) {
-//            address = address + ", " + city;
-//        }
-//        if (state != null && !state.equals("null") && !state.isEmpty()) {
-//            address = address + ", " + state;
-//        }
-//        if (zipcode != null && !zipcode.equals("null") && !zipcode.isEmpty()) {
-//            address = address + " " + zipcode;
-//        }
-//        if (country != null && !country.equals("null") && !country.isEmpty()) {
-//            address = address + ", " + country;
-//        }
-//
-//        return address;
-//    }
-//
-//    // Getting Categories from each business
-//    public String getBusinessCategories(JSONObject businessJO) {
-//        String categories = "";
-//        try {
-//            JSONArray categoriesArray = (JSONArray) businessJO.get("categories");
-//            if (categoriesArray.length() <= 0) {
-//                categories = "No categories";
-//            } else {
-//                if (categoriesArray.length() > 1) {
-//                    // get every category, up to the second to last one
-//                    for (int j = 0; j < categoriesArray.length() - 1; j++) {
-//                        JSONObject category = categoriesArray.getJSONObject(j);
-//                        String title = category.getString("title");
-//                        categories = categories.concat(title + ", ");
-//                    }
-//                }
-//                // add the last category if more than 1, or the only category if only 1
-//                JSONObject category = categoriesArray.getJSONObject(categoriesArray.length() - 1);
-//                String title = category.getString("title");
-//                categories = categories.concat(title);
-//            }
-//        } catch (JSONException exception) {
-//            Log.d(LOG_TAG, exception.toString());
-//            categories = "Error retrieving categories";
-//        }
-//        return categories;
-//    }
-//
-//    public double[] getBusinessCoordinates(JSONObject businessJO) {
-//        double coordinates[] = {0.0, 0.0};
-//        try {
-//            JSONObject coordinatesObject = (JSONObject) businessJO.get("coordinates");
-//            coordinates[0] = coordinatesObject.getDouble("latitude");
-//            coordinates[1] = coordinatesObject.getDouble("longitude");
-//        } catch (JSONException exception) {
-//            Log.d(LOG_TAG, exception.toString());
-//        }
-//        return coordinates;
-//    }
-//
-//    public ArrayList<String> getBusinessPhotos(JSONObject businessJO) {
-//        ArrayList<String> photos = new ArrayList<>();
-//        try {
-//            JSONArray photosArray = (JSONArray) businessJO.getJSONArray("photos");
-//            if (photosArray != null) {
-//                for (int i = 0; i < photosArray.length(); i++) {
-//                    photos.add(photosArray.get(i).toString());
-//                }
-//            }
-//        } catch (JSONException exception) {
-//            Log.d(LOG_TAG, exception.toString());
-//        }
-//        return photos;
-//    }
-//
-//    public ArrayList<JSONObject> getBusinessHours(JSONObject businessJO) {
-//        ArrayList<JSONObject> hours = new ArrayList<>();
-//        try {
-//            JSONArray hoursArray = (JSONArray) businessJO.getJSONArray("hours");
-//            if (hoursArray != null) {
-//                for (int i = 0; i < hoursArray.length(); i++) {
-//                    JSONObject hoursObject = (JSONObject) hoursArray.get(i);
-//                    JSONArray openArray = (JSONArray) hoursObject.get("open");
-//                    if (openArray != null) {
-//                        for (int j = 0; j < openArray.length(); j++) {
-//                            JSONObject dayObject = (JSONObject) openArray.get(j);
-//                            hours.add(dayObject);
-//                        }
-//                    }
-//                }
-//            }
-//        } catch (JSONException exception) {
-//            Log.d(LOG_TAG, exception.toString());
-//        }
-//        return hours;
-//    }
-
-
-
 
 
     /**

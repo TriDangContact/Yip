@@ -117,10 +117,6 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
 
     @Override
     public void onSearchListFragmentInteraction(Business item) {
-        Toast.makeText(HomeActivity.this, "Selected: " + item.mId,
-                Toast.LENGTH_SHORT).show();
-
-        // TODO: start a new activity that displays the business details
         displayBusinessDetail(item.mId);
     }
 

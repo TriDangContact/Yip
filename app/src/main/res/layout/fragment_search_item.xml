@@ -16,7 +16,8 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical">
 
         <ImageView
             android:id="@+id/fm_business_image"
@@ -29,95 +30,96 @@
             android:scaleType="centerCrop"
             android:contentDescription="@string/fm_search_item_business_image_description"/>
 
-
-        <HorizontalScrollView
-            android:id="@+id/fm_search_item_scroll_1"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:layout_marginTop="@dimen/search_item_business_text_scroll_bottom_margin"
-            android:layout_marginEnd="@dimen/search_item_business_text_scroll_bottom_margin"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
             android:layout_toEndOf="@id/fm_business_image">
 
-            <TextView
-                android:id="@+id/fm_business_name"
+            <HorizontalScrollView
+                android:id="@+id/fm_search_item_scroll_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceListItem"
-                android:textStyle="bold"
-                tools:text="item_1_name" />
+                android:scrollbars="none">
 
-        </HorizontalScrollView>
+                <TextView
+                    android:id="@+id/fm_business_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:textStyle="bold"
+                    tools:text="item_1_name" />
+
+            </HorizontalScrollView>
 
 
-        <ImageView
-            android:id="@+id/fm_business_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/search_item_business_rating_image_margin"
-            android:layout_marginBottom="@dimen/search_item_business_rating_image_margin"
-            android:src="@drawable/stars_small_5"
-            android:layout_below="@+id/fm_search_item_scroll_1"
-            android:layout_alignParentEnd="false"
-            android:layout_toEndOf="@id/fm_business_image"
-            android:contentDescription="@string/fm_search_item_rating_description"
-            />
-
-        <TextView
-            android:id="@+id/fm_business_review_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/fm_business_rating"
-            android:layout_toEndOf="@id/fm_business_image"
-            android:textSize="@dimen/search_item_business_review_text"
-            tools:text="12345"
-            />
-        <TextView
-            android:id="@+id/fm_business_reviews"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_below="@+id/fm_business_rating"
-            android:layout_toEndOf="@id/fm_business_review_count"
-            android:textSize="@dimen/search_item_business_review_text"
-            android:text="@string/search_item_review"
-            />
-
-        <HorizontalScrollView
-            android:id="@+id/fm_search_item_scroll_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:layout_marginEnd="@dimen/search_item_business_text_scroll_bottom_margin"
-            android:layout_below="@+id/fm_business_review_count"
-            android:layout_toEndOf="@id/fm_business_image">
-
-            <TextView
-                android:id="@+id/fm_business_category"
+            <ImageView
+                android:id="@+id/fm_business_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceListItem"
-                tools:text="item_1_category" />
+                android:layout_marginTop="@dimen/search_item_business_rating_image_margin"
+                android:layout_marginBottom="@dimen/search_item_business_rating_image_margin"
+                android:src="@drawable/stars_small_5"
+                android:contentDescription="@string/fm_search_item_rating_description"
+                />
 
-        </HorizontalScrollView>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-        <HorizontalScrollView
-            android:id="@+id/fm_search_item_scroll_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbars="none"
-            android:layout_marginEnd="@dimen/search_item_business_text_scroll_bottom_margin"
-            android:layout_below="@+id/fm_search_item_scroll_2"
-            android:layout_toEndOf="@id/fm_business_image">
+                <TextView
+                    android:id="@+id/fm_business_review_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/search_item_business_review_text"
+                    tools:text="12345"
+                    />
+                <TextView
+                    android:id="@+id/fm_business_reviews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textSize="@dimen/search_item_business_review_text"
+                    android:text="@string/search_item_review"
+                    />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/fm_business_address"
+
+            <HorizontalScrollView
+                android:id="@+id/fm_search_item_scroll_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceListItem"
-                tools:text="item_1_address" />
+                android:scrollbars="none"
+                android:layout_marginEnd="@dimen/search_item_business_text_scroll_bottom_margin">
 
-        </HorizontalScrollView>
+                <TextView
+                    android:id="@+id/fm_business_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    tools:text="item_1_category" />
+
+            </HorizontalScrollView>
+
+            <HorizontalScrollView
+                android:id="@+id/fm_search_item_scroll_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:layout_marginEnd="@dimen/search_item_business_text_scroll_bottom_margin">
+
+                <TextView
+                    android:id="@+id/fm_business_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    tools:text="item_1_address" />
+
+            </HorizontalScrollView>
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 

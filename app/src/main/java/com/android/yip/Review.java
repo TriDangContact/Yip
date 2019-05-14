@@ -16,12 +16,14 @@ public class Review {
     public String mText;
     public String mTimeCreated;
     public String mUrl;
+    private Context mContext;
 
     public Review() { initialize(); }
 
     public Review(JSONObject reviewJO, Context context) {
         initialize();
 
+        mContext = context;
         setReviewId(reviewJO);
         setReviewRating(reviewJO);
         setReviewUser(reviewJO);
@@ -41,7 +43,8 @@ public class Review {
 
     public void setReviewId(JSONObject reviewJO) {
         try {
-            mId = reviewJO.getString("id");
+            mId =
+                    reviewJO.getString(mContext.getResources().getString(R.string.yelp_response_business_reviews_id));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
         }
@@ -49,7 +52,8 @@ public class Review {
 
     public void setReviewRating(JSONObject reviewJO) {
         try {
-            mRating = reviewJO.getString("rating");
+            mRating =
+                    (String) String.valueOf(reviewJO.getDouble(mContext.getResources().getString(R.string.yelp_response_business_reviews_rating)));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
         }
@@ -57,11 +61,16 @@ public class Review {
 
     public void setReviewUser(JSONObject reviewJO) {
         try {
-            JSONObject userJO = (JSONObject) reviewJO.get("user");
-            mUser.put("id", userJO.getString("id"));
-            mUser.put("profile_url", userJO.getString("profile_url"));
-            mUser.put("image_url", userJO.getString("image_url"));
-            mUser.put("name", userJO.getString("name"));
+            JSONObject userJO =
+                    (JSONObject) reviewJO.get(mContext.getResources().getString(R.string.yelp_response_business_reviews_user));
+            mUser.put(mContext.getResources().getString(R.string.yelp_response_business_reviews_user_id),
+                    userJO.getString(mContext.getResources().getString(R.string.yelp_response_business_reviews_user_id)));
+            mUser.put(mContext.getResources().getString(R.string.yelp_response_business_reviews_user_profile_url),
+                    userJO.getString(mContext.getResources().getString(R.string.yelp_response_business_reviews_user_profile_url)));
+            mUser.put(mContext.getResources().getString(R.string.yelp_response_business_reviews_user_image_url),
+                    userJO.getString(mContext.getResources().getString(R.string.yelp_response_business_reviews_user_image_url)));
+            mUser.put(mContext.getResources().getString(R.string.yelp_response_business_reviews_user_name),
+                    userJO.getString(mContext.getResources().getString(R.string.yelp_response_business_reviews_user_name)));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
         }
@@ -69,7 +78,8 @@ public class Review {
 
     public void setReviewText(JSONObject reviewJO) {
         try {
-            mText = reviewJO.getString("text");
+            mText =
+                    reviewJO.getString(mContext.getResources().getString(R.string.yelp_response_business_reviews_text));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
         }
@@ -77,7 +87,8 @@ public class Review {
 
     public void setReviewTimeCreated(JSONObject reviewJO) {
         try {
-            mTimeCreated = reviewJO.getString("time_created");
+            mTimeCreated =
+                    reviewJO.getString(mContext.getResources().getString(R.string.yelp_response_business_reviews_time_created));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
         }
@@ -85,7 +96,8 @@ public class Review {
 
     public void setReviewUrl(JSONObject reviewJO) {
         try {
-            mUrl = reviewJO.getString("url");
+            mUrl =
+                    reviewJO.getString(mContext.getResources().getString(R.string.yelp_response_business_reviews_url));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
         }

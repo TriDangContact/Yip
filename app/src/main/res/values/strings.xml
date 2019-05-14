@@ -5,6 +5,7 @@
     <string name="title_map">Map</string>
     <string name="search_title">Search for Businesses</string>
     <string name="search_hint">Dominos, Pizza Hut, etc.</string>
+    <string name="default_location">San Diego, CA</string>
     <string name="empty_list">Empty List.</string>
 
     <string name="search_bar_hint">Pizza, Sushi, etc&#8230;</string>
@@ -18,16 +19,36 @@
     <string name="request_header_value">Bearer</string>
     <string name="loading_request">Getting Request&#8230;</string>
 
-    <string name="yelp_api_domain">api.yelp.com</string>
-    <string name="yelp_endpoint_autocomplete">v3/autocomplete</string>
-    <string name="yelp_endpoint_business">v3/businesses/</string>
-    <string name="yelp_endpoint_business_reviews">/reviews</string>
-    <string name="yelp_endpoint_business_search">search</string>
+
+
+
 
     <string name="business_detail_isclosed">Currently Closed</string>
     <string name="business_detail_isopen">Currently Open</string>
     <string name="business_detail_hours">HOURS:</string>
+    <string name="business_detail_hours_monday">Monday:</string>
+    <string name="business_detail_hours_tuesday">Tuesday:</string>
+    <string name="business_detail_hours_wednesday">Wednesday:</string>
+    <string name="business_detail_hours_thursday">Thursday:</string>
+    <string name="business_detail_hours_friday">Friday:</string>
+    <string name="business_detail_hours_saturday">Saturday:</string>
+    <string name="business_detail_hours_sunday">Sunday:</string>
+    <string name="business_detail_hours_unknown">Unknown day:</string>
+    <string name="business_detail_hours_time_to">&#160;-&#160;</string>
+    <string name="business_detail_no_reviews">No Reviews Available.</string>
 
-    <string name="volley_error">VOLLEY ERROR: </string>
+    <!--Error Messages-->
+    <string name="business_detail_open_map_error">Unable to open map.</string>
+    <string name="business_detail_open_dialer_error">No dialer available.</string>
+    <string name="business_detail_open_browser_error">Unable to open with browser.</string>
+    <string name="yelp_response_business_search_alias_error">Error Retrieving alias</string>
+    <string name="yelp_response_business_search_name_error">Error Retrieving name</string>
+    <string name="yelp_response_business_detail_price_error">Error Retrieving Price</string>
+    <string name="yelp_response_business_search_categories_none">No Categories</string>
+    <string name="yelp_response_business_search_categories_error">Error Retrieving
+        Categories</string>
+
+    <string name="volley_success">DATA RETRIEVAL SUCCESS</string>
+    <string name="volley_error">DATA RETRIEVAL ERROR: </string>
 
 </resources>

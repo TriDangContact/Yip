@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/text_input"
+            android:id="@+id/search_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -20,8 +20,18 @@
             android:inputType="textAutoComplete"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <EditText
+            android:id="@+id/location_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:hint="Location"
+            android:inputType="textAutoComplete"
+            app:layout_constraintTop_toBottomOf="@id/search_input" />
+
         <Button
-            android:id="@+id/testing_btn"
+            android:id="@+id/search_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -29,7 +39,7 @@
 
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_input" />
+            app:layout_constraintTop_toBottomOf="@id/location_input" />
 
         <TextView
             android:id="@+id/no_list_text"
@@ -39,7 +49,7 @@
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/testing_btn" />
+            app:layout_constraintTop_toBottomOf="@id/search_btn" />
 
 
     </android.support.constraint.ConstraintLayout>

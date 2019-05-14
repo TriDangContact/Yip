@@ -36,6 +36,7 @@ public class Business {
     public ArrayList<String> mPhotos;
     public String mPrice;
     public ArrayList<JSONObject> mHours;
+    private Context mContext;
 
     public Business() {
         initialize();
@@ -45,6 +46,7 @@ public class Business {
     public Business(JSONObject businessJO, Context context) {
         initialize();
 
+        mContext = context;
         setBusinessId(businessJO);
         setBusinessAlias(businessJO);
         setBusinessName(businessJO);
@@ -89,7 +91,8 @@ public class Business {
 
     public void setBusinessId(JSONObject businessJO) {
         try {
-            mId = businessJO.getString("id");
+            mId =
+                    businessJO.getString(mContext.getResources().getString(R.string.yelp_response_business_search_id));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
         }
@@ -97,24 +100,29 @@ public class Business {
 
     public void setBusinessAlias(JSONObject businessJO) {
         try {
-            mAlias = businessJO.getString("alias");
+            mAlias =
+                    businessJO.getString(mContext.getResources().getString(R.string.yelp_response_business_search_alias));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
-            mAlias = "Error retrieving alias";
+            mAlias =
+                    mContext.getResources().getString(R.string.yelp_response_business_search_alias_error);
         }
     }
 
     public void setBusinessName(JSONObject businessJO) {
         try {
-            mName = businessJO.getString("name");
+            mName =
+                    businessJO.getString(mContext.getResources().getString(R.string.yelp_response_business_search_name));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
-            mName = "Error retrieving name";
+            mName =
+                    mContext.getResources().getString(R.string.yelp_response_business_search_name_error);
         }
     }
     public void setBusinessImageUrl(JSONObject businessJO) {
         try {
-            mImageUrl = businessJO.getString("image_url");
+            mImageUrl =
+                    businessJO.getString(mContext.getResources().getString(R.string.yelp_response_business_search_image_url));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
         }
@@ -137,7 +145,8 @@ public class Business {
 
     public void setBusinessIsClosed(JSONObject businessJO) {
         try {
-            mIsClosed = businessJO.getBoolean("is_closed");
+            mIsClosed =
+                    businessJO.getBoolean(mContext.getResources().getString(R.string.yelp_response_business_search_is_closed));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
         }
@@ -145,7 +154,8 @@ public class Business {
 
     public void setBusinessUrl(JSONObject businessJO) {
         try {
-            mUrl = businessJO.getString("url");
+            mUrl =
+                    businessJO.getString(mContext.getResources().getString(R.string.yelp_response_business_search_url));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
         }
@@ -153,7 +163,8 @@ public class Business {
 
     public void setBusinessPhone(JSONObject businessJO) {
         try {
-            mPhone = businessJO.getString("phone");
+            mPhone =
+                    businessJO.getString(mContext.getResources().getString(R.string.yelp_response_business_search_phone));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
         }
@@ -161,7 +172,8 @@ public class Business {
 
     public void setBusinessDisplayPhone(JSONObject businessJO) {
         try {
-            mDisplayPhone = businessJO.getString("display_phone");
+            mDisplayPhone =
+                    businessJO.getString(mContext.getResources().getString(R.string.yelp_response_business_search_display_phone));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
         }
@@ -169,7 +181,8 @@ public class Business {
 
     public void setBusinessReviewCount(JSONObject businessJO) {
         try {
-            mReviewCount = businessJO.getInt("review_count");
+            mReviewCount =
+                    businessJO.getInt(mContext.getResources().getString(R.string.yelp_response_business_search_review_count));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
         }
@@ -177,7 +190,8 @@ public class Business {
 
     public void setBusinessRating(JSONObject businessJO) {
         try {
-            mRating = (String) String.valueOf(businessJO.getDouble("rating"));
+            mRating =
+                    (String) String.valueOf(businessJO.getDouble(mContext.getResources().getString(R.string.yelp_response_business_search_rating)));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
         }
@@ -185,10 +199,12 @@ public class Business {
 
     public void setBusinessPrice(JSONObject businessJO) {
         try {
-            mPrice = businessJO.getString("price");
+            mPrice =
+                    businessJO.getString(mContext.getResources().getString(R.string.yelp_response_business_detail_price));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
-            mPrice = "Error retrieving price";
+            mPrice =
+                    mContext.getResources().getString(R.string.yelp_response_business_detail_price_error);
         }
     }
 
@@ -203,14 +219,22 @@ public class Business {
         String address = "";
 
         try {
-            JSONObject locationObject = (JSONObject) businessJO.get("location");
-            address1 = locationObject.getString("address1");
-            address2 = locationObject.getString("address2");
-            address3 = locationObject.getString("address3");
-            city = locationObject.getString("city");
-            state = locationObject.getString("state");
-            zipcode = locationObject.getString("zip_code");
-            country = locationObject.getString("country");
+            JSONObject locationObject =
+                    (JSONObject) businessJO.get(mContext.getResources().getString(R.string.yelp_response_business_search_location));
+            address1 =
+                    locationObject.getString(mContext.getResources().getString(R.string.yelp_response_business_search_address1));
+            address2 =
+                    locationObject.getString(mContext.getResources().getString(R.string.yelp_response_business_search_address2));
+            address3 =
+                    locationObject.getString(mContext.getResources().getString(R.string.yelp_response_business_search_address3));
+            city =
+                    locationObject.getString(mContext.getResources().getString(R.string.yelp_response_business_search_city));
+            state =
+                    locationObject.getString(mContext.getResources().getString(R.string.yelp_response_business_search_state));
+            zipcode =
+                    locationObject.getString(mContext.getResources().getString(R.string.yelp_response_business_search_zip_code));
+            country =
+                    locationObject.getString(mContext.getResources().getString(R.string.yelp_response_business_search_country));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
         }
@@ -245,34 +269,42 @@ public class Business {
     // Getting Categories from each business
     public void setBusinessCategories(JSONObject businessJO) {
         try {
-            JSONArray categoriesArray = (JSONArray) businessJO.get("categories");
+            JSONArray categoriesArray =
+                    (JSONArray) businessJO.get(mContext.getResources().getString(R.string.yelp_response_business_search_categories));
             if (categoriesArray.length() <= 0) {
-                mCategories = "No categories";
+                mCategories =
+                        mContext.getResources().getString(R.string.yelp_response_business_search_categories_none);
             } else {
                 if (categoriesArray.length() > 1) {
                     // get every category, up to the second to last one
                     for (int j = 0; j < categoriesArray.length() - 1; j++) {
                         JSONObject category = categoriesArray.getJSONObject(j);
-                        String title = category.getString("title");
+                        String title =
+                                category.getString(mContext.getResources().getString(R.string.yelp_response_business_search_categories_title));
                         mCategories = mCategories.concat(title + ", ");
                     }
                 }
                 // add the last category if more than 1, or the only category if only 1
                 JSONObject category = categoriesArray.getJSONObject(categoriesArray.length() - 1);
-                String title = category.getString("title");
+                String title =
+                        category.getString(mContext.getResources().getString(R.string.yelp_response_business_search_categories_title));
                 mCategories = mCategories.concat(title);
             }
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
-            mCategories = "Error retrieving categories";
+            mCategories =
+                    mContext.getResources().getString(R.string.yelp_response_business_search_categories_error);
         }
     }
 
     public void setBusinessCoordinates(JSONObject businessJO) {
         try {
-            JSONObject coordinatesObject = (JSONObject) businessJO.get("coordinates");
-            mLatitude = coordinatesObject.getDouble("latitude");
-            mLongitude = coordinatesObject.getDouble("longitude");
+            JSONObject coordinatesObject =
+                    (JSONObject) businessJO.get(mContext.getResources().getString(R.string.yelp_response_business_search_coordinates));
+            mLatitude =
+                    coordinatesObject.getDouble(mContext.getResources().getString(R.string.yelp_response_business_search_latitude));
+            mLongitude =
+                    coordinatesObject.getDouble(mContext.getResources().getString(R.string.yelp_response_business_search_longitude));
         } catch (JSONException exception) {
             Log.d(LOG_TAG, exception.toString());
         }
@@ -280,7 +312,8 @@ public class Business {
 
     public void setBusinessPhotos(JSONObject businessJO) {
         try {
-            JSONArray photosArray = (JSONArray) businessJO.getJSONArray("photos");
+            JSONArray photosArray =
+                    (JSONArray) businessJO.getJSONArray(mContext.getResources().getString(R.string.yelp_response_business_detail_photos));
             if (photosArray != null) {
                 for (int i = 0; i < photosArray.length(); i++) {
                     mPhotos.add(photosArray.get(i).toString());
@@ -293,11 +326,13 @@ public class Business {
 
     public void setBusinessHours(JSONObject businessJO) {
         try {
-            JSONArray hoursArray = (JSONArray) businessJO.getJSONArray("hours");
+            JSONArray hoursArray =
+                    (JSONArray) businessJO.getJSONArray(mContext.getResources().getString(R.string.yelp_response_business_detail_hours));
             if (hoursArray != null) {
                 for (int i = 0; i < hoursArray.length(); i++) {
                     JSONObject hoursObject = (JSONObject) hoursArray.get(i);
-                    JSONArray openArray = (JSONArray) hoursObject.get("open");
+                    JSONArray openArray =
+                            (JSONArray) hoursObject.get(mContext.getResources().getString(R.string.yelp_response_business_detail_hours_open));
                     if (openArray != null) {
                         for (int j = 0; j < openArray.length(); j++) {
                             JSONObject dayObject = (JSONObject) openArray.get(j);
