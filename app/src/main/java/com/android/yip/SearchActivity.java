@@ -53,7 +53,7 @@ public class SearchActivity extends AppCompatActivity {
         mSearchInput = (AutoCompleteTextView) findViewById(R.id.search_input);
         mLocationInput = (EditText) findViewById(R.id.location_input);
         mSearchBtn = (ImageButton) findViewById(R.id.search_btn);
-//        mTestView = (TextView) findViewById(R.id.no_list_text);
+        mTestView = (TextView) findViewById(R.id.no_list_text);
 
         mSearchInput.addTextChangedListener(new TextWatcher() {
             @Override
@@ -185,7 +185,7 @@ public class SearchActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 String message = getString(R.string.volley_error) + error.getMessage();
                 Log.d(LOG_TAG, message);
-//                mTestView.setText(message);
+                mTestView.setText(getString(R.string.volley_search_error));
                 mProgressDialog.hide();
             }
         })
@@ -240,7 +240,6 @@ public class SearchActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 String message = getString(R.string.volley_error) + error.getMessage();
                 Log.d(LOG_TAG, message);
-//                mTestView.setText(message);
             }
         })
         {

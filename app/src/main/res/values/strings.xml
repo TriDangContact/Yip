@@ -50,5 +50,8 @@
 
     <string name="volley_success">DATA RETRIEVAL SUCCESS</string>
     <string name="volley_error">DATA RETRIEVAL ERROR: </string>
+    <string name="volley_search_error">Unable to search.
+        Please make sure Search term and location is valid.
+        Or check your network connection.</string>
 
 </resources>
