@@ -1,16 +1,18 @@
 package com.android.yip;
 
 import android.app.ProgressDialog;
-import android.content.Context;
+import android.location.Location;
 import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -18,6 +20,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,80 +29,56 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link EmptyFragment.OnEmptyFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link EmptyFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class EmptyFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private static final String LOG_TAG = "EmptyFragment";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private EditText mSearchInput;
+public class SearchActivity extends AppCompatActivity {
+    private static final String LOG_TAG = "SearchActivity";
+    private AutoCompleteTextView mSearchInput;
     private EditText mLocationInput;
-    private Button mSearchBtn;
+    private ImageButton mSearchBtn;
     private TextView mTestView;
     private ProgressDialog mProgressDialog;
-
-    private OnEmptyFragmentInteractionListener mListener;
-
-    public EmptyFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EmptyFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EmptyFragment newInstance(String param1, String param2) {
-        EmptyFragment fragment = new EmptyFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private FusedLocationProviderClient mFusedLocationProviderClient;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+        setContentView(R.layout.activity_search);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_empty, container, false);
+        mProgressDialog = new ProgressDialog(this);
+//        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-        mProgressDialog = new ProgressDialog(getActivity());
+        mSearchInput = (AutoCompleteTextView) findViewById(R.id.search_input);
+        mLocationInput = (EditText) findViewById(R.id.location_input);
+        mSearchBtn = (ImageButton) findViewById(R.id.search_btn);
+//        mTestView = (TextView) findViewById(R.id.no_list_text);
 
-        // TODO: FOR TESTING
-        mSearchInput = (EditText) view.findViewById(R.id.search_input);
-        mLocationInput = (EditText) view.findViewById(R.id.location_input);
-        mSearchBtn = (Button) view.findViewById(R.id.search_btn);
-        mTestView = (TextView) view.findViewById(R.id.no_list_text);
+        mSearchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                String text = mSearchInput.getText().toString();
+                String endpointAC = getString(R.string.yelp_endpoint_autocomplete);
+                HashMap<String, String> parametersAC = new HashMap<>();
+                parametersAC.put(getString(R.string.yelp_parameters_autocomplete_text), text);
+                runAutocompleteQuery(endpointAC, parametersAC);
+
+                ContentList list = ContentList.get(getApplicationContext());
+                List<String> suggestionList = list.getSuggestions();
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
+                        android.R.layout.simple_list_item_1,
+                        suggestionList);
+                mSearchInput.setAdapter(adapter);
+                mSearchInput.setThreshold(0);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
 
         mSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,11 +87,12 @@ public class EmptyFragment extends Fragment {
                         getString(R.string.yelp_endpoint_business) + getString(R.string.yelp_endpoint_business_search);
                 String location = mLocationInput.getText().toString();
                 if (location.isEmpty()) {
+//                    requestCurrentLocation();
                     location = getString(R.string.default_location);
                 }
                 String text = mSearchInput.getText().toString();
 
-                // Build the URI using various parameters
+                // Build the URI using various param1eters
                 HashMap<String, String> parameters = new HashMap<>();
 
                 // business search parameters
@@ -123,43 +104,10 @@ public class EmptyFragment extends Fragment {
 //              parameters.put("latitude", "32.775807");
 //              parameters.put("longitude", "-117.069864");
 
-                // autocomplete parameters
-                // Req: text, lat, long, locale(optional)
-//              parameters.put("text", text);
-//              parameters.put("latitude", "32.775807");
-//              parameters.put("longitude", "-117.069864");
-
                 runSearchQuery(endpoint, parameters);
             }
         });
-
-        return view;
     }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(String string) {
-        if (mListener != null) {
-            mListener.onEmptyFragmentInteraction(string);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnEmptyFragmentInteractionListener) {
-            mListener = (OnEmptyFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
 
     /**
      * @param path the endpoints for the request
@@ -191,7 +139,7 @@ public class EmptyFragment extends Fragment {
     }
 
 
-    // TODO: implement search query to search for businesses based on text entered
+    // search query to search for businesses based on text entered
     private void runSearchQuery(String endpoint, HashMap<String,String> parameters) {
         String tag_json_obj_search = "json_obj_search_req";
 
@@ -209,7 +157,7 @@ public class EmptyFragment extends Fragment {
                         // TODO: instantiate Business object using response, and add Business
                         // object to BusinessList
 
-                        ContentList list = ContentList.get(getContext());
+                        ContentList list = ContentList.get(getApplicationContext());
                         List<Business> businessList = list.getBusinesses();
                         businessList.clear();
                         try {
@@ -219,10 +167,13 @@ public class EmptyFragment extends Fragment {
                             // getting every business from the business array
                             for (int i = 0; i < businessesArray.length(); i++) {
                                 JSONObject businessJO = businessesArray.getJSONObject(i);
-                                Business business = new Business(businessJO, getContext());
+                                Business business = new Business(businessJO, getApplicationContext());
                                 businessList.add(business);
-                                mTestView.setText("VOLLEY: " +business.toString());
+                                Log.d(LOG_TAG, getString(R.string.volley_success));
+//                                mTestView.setText(R.string.volley_success);
                                 mProgressDialog.hide();
+                                setResult(RESULT_OK);
+                                finish();
                             }
                         } catch (JSONException e) {
                             Log.d(LOG_TAG, e.toString());
@@ -230,13 +181,14 @@ public class EmptyFragment extends Fragment {
 
                     }
                 }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        String message = getString(R.string.volley_error) + error.getMessage();
-                        mTestView.setText(message);
-                        mProgressDialog.hide();
-                    }
-                })
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                String message = getString(R.string.volley_error) + error.getMessage();
+                Log.d(LOG_TAG, message);
+//                mTestView.setText(message);
+                mProgressDialog.hide();
+            }
+        })
         {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -248,7 +200,7 @@ public class EmptyFragment extends Fragment {
             }
         };
         VolleyQueueSingleton
-                .getInstance(getContext())
+                .getInstance(getApplicationContext())
                 .addToRequestQueue(jsonObjReq, tag_json_obj_search);
     }
 
@@ -259,25 +211,38 @@ public class EmptyFragment extends Fragment {
         String url = getURL(endpoint, parameters);
         Log.d(LOG_TAG, "URL: " + url);
 
-        mProgressDialog.setMessage(getString(R.string.loading_request));
-        mProgressDialog.show();
-
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Request.Method.GET,
                 url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        mTestView.setText(R.string.volley_success);
-                        mProgressDialog.hide();
+                        ContentList list = ContentList.get(getApplicationContext());
+                        List<String> suggestionList = list.getSuggestions();
+                        suggestionList.clear();
+
+                        try {
+                            JSONArray termsArray = (JSONArray)
+                                    response.get(getString(R.string.yelp_response_autocomplete_terms));
+
+                            for (int i = 0; i < termsArray.length(); i++) {
+                                JSONObject textJO = termsArray.getJSONObject(i);
+                                String text =
+                                        textJO.getString(getString(R.string.yelp_response_autocomplete_text));
+                                suggestionList.add(text);
+                                Log.d(LOG_TAG, text);
+                            }
+                        } catch (JSONException exception) {
+                            Log.d(LOG_TAG, exception.toString());
+                        }
                     }
                 }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        String message = getString(R.string.volley_error) + error.getMessage();
-                        mTestView.setText(message);
-                        mProgressDialog.hide();
-                    }
-                })
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                String message = getString(R.string.volley_error) + error.getMessage();
+                Log.d(LOG_TAG, message);
+//                mTestView.setText(message);
+            }
+        })
         {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -289,23 +254,21 @@ public class EmptyFragment extends Fragment {
             }
         };
         VolleyQueueSingleton
-                .getInstance(getContext())
+                .getInstance(getApplicationContext())
                 .addToRequestQueue(jsonObjReq, tag_json_obj_autocomp);
     }
 
+//    private void requestCurrentLocation() {
+//        mFusedLocationProviderClient.getLastLocation()
+//                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+//                    @Override
+//                    public void onSuccess(Location location) {
+//                        // Got last known location. In some rare situations this can be null.
+//                        if (location != null) {
+//                            // Logic to handle location object
+//                        }
+//                    }
+//                });
+//    }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnEmptyFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onEmptyFragmentInteraction(String string);
-    }
 }

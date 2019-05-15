@@ -7,8 +7,13 @@
     <string name="search_hint">Dominos, Pizza Hut, etc.</string>
     <string name="default_location">San Diego, CA</string>
     <string name="empty_list">Empty List.</string>
+    <string name="popup_title">Welcome!</string>
+    <string name="popup_text">Welcome to Yip!\n\nStart by pressing the Search button on the top
+        right corner.</string>
+    <string name="popup_btn_text">Got it!</string>
 
     <string name="search_bar_hint">Pizza, Sushi, etc&#8230;</string>
+    <string name="location_bar_hint">San Diego, CA</string>
     <string name="search_item_review">Reviews</string>
 
     <string name="fm_search_item_rating_description">Overall Number of Stars</string>
@@ -18,10 +23,6 @@
     <string name="request_header_key">Authorization</string>
     <string name="request_header_value">Bearer</string>
     <string name="loading_request">Getting Request&#8230;</string>
-
-
-
-
 
     <string name="business_detail_isclosed">Currently Closed</string>
     <string name="business_detail_isopen">Currently Open</string>
@@ -39,14 +40,13 @@
 
     <!--Error Messages-->
     <string name="business_detail_open_map_error">Unable to open map.</string>
-    <string name="business_detail_open_dialer_error">No dialer available.</string>
-    <string name="business_detail_open_browser_error">Unable to open with browser.</string>
-    <string name="yelp_response_business_search_alias_error">Error Retrieving alias</string>
-    <string name="yelp_response_business_search_name_error">Error Retrieving name</string>
-    <string name="yelp_response_business_detail_price_error">Error Retrieving Price</string>
+    <string name="business_detail_open_dialer_error">Unable to open dialer.</string>
+    <string name="business_detail_open_browser_error">Unable to open browser.</string>
+    <string name="yelp_response_business_search_alias_error">Alias Unavailable</string>
+    <string name="yelp_response_business_search_name_error">Name Unavailable</string>
+    <string name="yelp_response_business_detail_price_error">Price Unavailable</string>
     <string name="yelp_response_business_search_categories_none">No Categories</string>
-    <string name="yelp_response_business_search_categories_error">Error Retrieving
-        Categories</string>
+    <string name="yelp_response_business_search_categories_error">Categories Unavailable</string>
 
     <string name="volley_success">DATA RETRIEVAL SUCCESS</string>
     <string name="volley_error">DATA RETRIEVAL ERROR: </string>

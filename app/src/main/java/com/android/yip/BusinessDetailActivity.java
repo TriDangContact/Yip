@@ -1,20 +1,15 @@
 package com.android.yip;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,13 +25,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -122,14 +114,12 @@ public class BusinessDetailActivity extends AppCompatActivity {
                 openAddress(mAddress.getText().toString());
             }
         });
-
         mDisplayPhoneLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openDialer(mDisplayPhone.getText().toString());
             }
         });
-
         mUrlLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,8 +178,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                String message = getString(R.string.volley_error) + error.getMessage();
-                mName.setText(message);
+                Log.d(LOG_TAG, getString(R.string.volley_error) + error.getMessage());
                 mProgressDialog.hide();
             }
         })
@@ -219,6 +208,8 @@ public class BusinessDetailActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        // we take every reviews for each business and add to our list so we can
+                        // display them
                         ContentList list = ContentList.get(getApplicationContext());
                         List<Review> reviewList = list.getReviews();
                         reviewList.clear();
@@ -238,8 +229,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                String message = getString(R.string.volley_error) + error.getMessage();
-                mName.setText(message);
+                Log.d(LOG_TAG, getString(R.string.volley_error) + error.getMessage());
             }
         })
         {
@@ -270,10 +260,10 @@ public class BusinessDetailActivity extends AppCompatActivity {
         mPrice.setText(business.mPrice);
         if (business.mIsClosed) {
             mIsClosed.setText(R.string.business_detail_isclosed);
-            mIsClosed.setTextColor(getResources().getColor(R.color.colorRed));
+            mIsClosed.setTextColor(ContextCompat.getColor(this, R.color.colorRed));
         } else {
             mIsClosed.setText(R.string.business_detail_isopen);
-            mIsClosed.setTextColor(getResources().getColor(R.color.colorGreen));
+            mIsClosed.setTextColor(ContextCompat.getColor(this, R.color.colorGreen));
         }
         mAddress.setText(business.mAddress);
         mDisplayPhone.setText(business.mDisplayPhone);
@@ -283,7 +273,11 @@ public class BusinessDetailActivity extends AppCompatActivity {
     }
 
     private void setTitle(String title) {
-        getSupportActionBar().setTitle(title);
+        if (title.isEmpty()) {
+            getSupportActionBar().setTitle(getString(R.string.app_name));
+        } else {
+            getSupportActionBar().setTitle(title);
+        }
     }
 
     private void loadImage(String url, ImageView imageView) {
@@ -354,11 +348,17 @@ public class BusinessDetailActivity extends AppCompatActivity {
                 String reviewDate = review.mTimeCreated;
                 String reviewRating = review.mRating;
                 String reviewText = review.mText;
+                final String reviewUrl = review.mUrl;
 
-                // create a new relative layout to place the review in
+                /*
+                 * create a new linear layout to place the review in
+                 * android:layout_width="match_parent"
+                 * android:layout_height="wrap_content"
+                 * android:layout_marginBottom="@dimen/business_detail_ll_reviews_margin"
+                 * android:orientation="vertical"
+                 */
                 int reviewRLMargin =
                         getResources().getDimensionPixelSize(R.dimen.business_detail_ll_reviews_margin);
-
                 LinearLayout.LayoutParams reviewRLParams =
                         new LinearLayout.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -369,7 +369,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
                 reviewRL.setLayoutParams(reviewRLParams);
                 reviewRL.setOrientation(LinearLayout.VERTICAL);
 
-                // create a new linear layout for user photo and name
+                /// create a new linear layout for user photo and name
                 int userReviewInfoMargin =
                         getResources().getDimensionPixelSize(R.dimen.business_detail_ll_reviews_user_margin);
 
@@ -383,7 +383,8 @@ public class BusinessDetailActivity extends AppCompatActivity {
                 userInfoLL.setLayoutParams(userLLParams);
                 userInfoLL.setOrientation(LinearLayout.HORIZONTAL);
 
-                // create an imageview to hold the user photo
+
+                /// create an imageview to hold the user photo
                 int userPhotoWidth =
                         getResources().getDimensionPixelSize(R.dimen.business_detail_review_user_photo_width);
                 int userPhotoHeight =
@@ -399,7 +400,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
                 userInfoLL.addView(userPhotoView);
 
-                // create a textview to hold the user's name
+                /// create a textview to hold the user's name
                 int userNameMargin =
                         getResources().getDimensionPixelSize(R.dimen.business_detail_review_user_name_margin);
                 LinearLayout.LayoutParams userNameParams =
@@ -414,7 +415,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
                 userInfoLL.addView(userNameView);
 
-                // create a new linear layout for review rating
+                /// create a new linear layout for review rating
                 int userRatingMargin =
                         getResources().getDimensionPixelSize(R.dimen.business_detail_review_user_rating_margin);
                 LinearLayout ratingInfoLL = new LinearLayout(this);
@@ -425,7 +426,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
                 ratingInfoLL.setLayoutParams(userRatingParams);
                 ratingInfoLL.setOrientation(LinearLayout.HORIZONTAL);
 
-                // create an imageview to display rating
+                /// create an imageview to display rating
                 int reviewRatingWidth =
                         getResources().getDimensionPixelSize(R.dimen.business_detail_review_review_rating_width);
                 RelativeLayout.LayoutParams reviewRatingParams =
@@ -438,8 +439,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
                 ratingLoader.setRatingsDrawable(reviewRating, reviewRatingView);
                 ratingInfoLL.addView(reviewRatingView);
 
-
-                // create a Textview to display review date
+                /// create a Textview to display review date
                 int reviewDateMargin =
                         getResources().getDimensionPixelSize(R.dimen.business_detail_review_date_margin);
                 RelativeLayout.LayoutParams reviewDateParams =
@@ -453,7 +453,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
                 ratingInfoLL.addView(reviewDateView);
 
-                // create a textview to display review text
+                /// create a textview to display review text
                 RelativeLayout.LayoutParams reviewTextParams =
                         new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                                 ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -461,12 +461,24 @@ public class BusinessDetailActivity extends AppCompatActivity {
                 ratingTextView.setLayoutParams(reviewTextParams);
                 ratingTextView.setText(reviewText);
 
-                // add linear layout 1, linear layout 2, and textview to reviewRL
+                /// add linear layout 1, linear layout 2, and textview to reviewRL
                 reviewRL.addView(userInfoLL);
                 reviewRL.addView(ratingInfoLL);
                 reviewRL.addView(ratingTextView);
 
+                TypedValue outValue = new TypedValue();
+                getApplication().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue,
+                        true);
+                reviewRL.setBackgroundResource(outValue.resourceId);
+                reviewRL.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        openWebPage(reviewUrl);
+                    }
+                });
+
                 mReviewLayout.addView(reviewRL);
+
             }
         } else {
             // no reviews available
@@ -494,7 +506,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
                 Log.d(LOG_TAG, exception.toString());
             }
 
-            // TODO: create relative layout to hold each dayObject
+            // create relative layout to hold each dayObject
             RelativeLayout.LayoutParams hoursParams =
                     new RelativeLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
@@ -502,7 +514,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
             RelativeLayout hoursRL = new RelativeLayout(this);
             hoursRL.setLayoutParams(hoursParams);
 
-            // TODO: create textview to display which day
+            // create textview to display which day
             RelativeLayout.LayoutParams dayViewParams =
                     new RelativeLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -515,7 +527,7 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
             hoursRL.addView(dayView);
 
-            // TODO: create linear layout to hold the start/end time
+            // create linear layout to hold the start/end time
             RelativeLayout.LayoutParams hoursLLParams =
                     new RelativeLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -535,12 +547,14 @@ public class BusinessDetailActivity extends AppCompatActivity {
             endTime = convert24hTo12h(endTime);
             endView.setText(endTime);
 
+            // add start/to/end view to the hoursLL
             hoursLL.addView(startView);
             hoursLL.addView(toView);
             hoursLL.addView(endView);
 
             hoursRL.addView(hoursLL);
 
+            // add each hour object to its parent layout
             mHoursLayout.addView(hoursRL);
         }
     }

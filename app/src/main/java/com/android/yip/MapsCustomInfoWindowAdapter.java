@@ -2,6 +2,7 @@ package com.android.yip;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
 public class MapsCustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
+    private static final String LOG_TAG = "MapsCustomInfoWindow";
     private View mMarkerView;
     private Context mContext;
     private ImageView mPicture;
@@ -44,16 +46,19 @@ public class MapsCustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter 
 
         // Retrieve the business data from the marker
         Business business = (Business) marker.getTag();
+        if (business != null) {
+            mName.setText(business.mName);
+            mReviews.setText(String.valueOf(business.mReviewCount));
+            mAddress.setText(business.mAddress);
+            mCategory.setText(business.mCategories);
+            mPicture.setImageBitmap(business.mImage);
+            // Set the appropriate stars drawable based on a business' rating
+            RatingLoader ratingLoader = new RatingLoader();
+            ratingLoader.setRatingsDrawable(business.mRating, mRating);
+        } else {
+            Log.d(LOG_TAG, "Unable to load business marker");
+        }
 
-        mName.setText(business.mName);
-        mReviews.setText(String.valueOf(business.mReviewCount));
-        mAddress.setText(business.mAddress);
-        mCategory.setText(business.mCategories);
-        mPicture.setImageBitmap(business.mImage);
-
-        // Set the appropriate stars drawable based on a business' rating
-        RatingLoader ratingLoader = new RatingLoader();
-        ratingLoader.setRatingsDrawable(business.mRating, mRating);
     }
 
 }

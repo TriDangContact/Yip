@@ -129,18 +129,33 @@ public class Business {
     }
 
     public void setBusinessImage(String url, Context context) {
-        Glide.with(context)
-                .asBitmap()
-                .load(url)
-                .into(new CustomTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        mImage = resource;
-                    }
-                    @Override
-                    public void onLoadCleared(@Nullable Drawable placeholder) {
-                    }
-                });
+        if (url == null || url.isEmpty()) {
+            Glide.with(context)
+                    .asBitmap()
+                    .load(R.drawable.profile_icon)
+                    .into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            mImage = resource;
+                        }
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                        }
+                    });
+        } else {
+            Glide.with(context)
+                    .asBitmap()
+                    .load(url)
+                    .into(new CustomTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                            mImage = resource;
+                        }
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                        }
+                    });
+        }
     }
 
     public void setBusinessIsClosed(JSONObject businessJO) {

@@ -1,7 +1,6 @@
 package com.android.yip;
 
-import android.app.SearchManager;
-import android.content.Context;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,13 +10,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.SearchView;
+import android.view.View;
+import android.widget.Button;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-public class HomeActivity extends AppCompatActivity implements SearchListFragment.OnSearchListFragmentInteractionListener, MapsFragment.OnMapsFragmentInteractionListener, EmptyFragment.OnEmptyFragmentInteractionListener {
+import java.util.List;
+
+public class HomeActivity extends AppCompatActivity implements SearchListFragment.OnSearchListFragmentInteractionListener, MapsFragment.OnMapsFragmentInteractionListener {
     private static final String LOG_TAG = "HomeActivity";
     private static final int REQUEST_REGISTER = 0;
     private static final String EXTRA_ID = "com.android.yip.id";
@@ -27,8 +28,6 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
 
     private BottomNavigationView mBottomNavigationView;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
-    private Toolbar mToolbar;
-    private SearchView mSearchView;
 
 
     @Override
@@ -36,20 +35,23 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        mToolbar = (Toolbar) findViewById(R.id.action_bar);
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.action_bar);
         setSupportActionBar(mToolbar);
 
         mBottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        mOnNavigationItemSelectedListener
-                = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.navigation_home:
-                        displayHomeFragment();
-                        return true;
                     case R.id.navigation_search:
                         displaySearchFragment();
+
+                        // if the user haven't searched anything, we display popup
+                        ContentList list = ContentList.get(getApplicationContext());
+                        List<Business> businessList = list.getBusinesses();
+                        if (businessList.size() <= 0) {
+                            displayPopUpWindow();
+                        }
                         return true;
                     case R.id.navigation_map:
                         displayMapFragment();
@@ -57,39 +59,16 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
                 }
                 return false;
             }
-        };
-        mBottomNavigationView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        });
 
-        displayHomeFragment();
+        displaySearchFragment();
+        displayPopUpWindow();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
-
-        // Associate searchable configuration with the SearchView
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        mSearchView =
-                (SearchView) menu.findItem(R.id.action_search).getActionView();
-        mSearchView.setQueryHint(getString(R.string.search_bar_hint));
-        mSearchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                // TODO: perform the query
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                // TODO: display suggestions
-                return false;
-            }
-        });
-
         return true;
     }
 
@@ -97,11 +76,9 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                // TODO: display the search dialog
+                displaySearchActivity();
                 return true;
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
     }
@@ -113,32 +90,20 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
 
     // Doesn't need
     @Override
-    public void onMapsFragmentInteraction(String string) {
-        Toast.makeText(this, "Touching map", Toast.LENGTH_SHORT).show();
-    }
-    // Doesn't need
-    @Override
-    public void onEmptyFragmentInteraction(String string) {
-        Toast.makeText(this, "Touching empty", Toast.LENGTH_SHORT).show();
-    }
+    public void onMapsFragmentInteraction(String string) {}
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-//        updateNavigation();
-    }
-
-
-    // TODO: implement various fragments
-
-    // used to test API calls
-    private void displayHomeFragment() {
-        FragmentManager manager = getSupportFragmentManager();
-        Fragment fragment = EmptyFragment.newInstance("test1", "test2");
-        manager.beginTransaction()
-                .replace(R.id.fragment_container, fragment, FRAGMENT_1)
-//                .addToBackStack(null)
-                .commitAllowingStateLoss();
+    private void displayPopUpWindow() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.activity_home_popup);
+        dialog.setTitle(getString(R.string.popup_title));
+        Button dialogButton = (Button) dialog.findViewById(R.id.popup_btn);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     private void displaySearchFragment() {
@@ -152,7 +117,7 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
 
     private void displayMapFragment() {
         FragmentManager manager = getSupportFragmentManager();
-        Fragment fragment = MapsFragment.newInstance("test1", "test2");
+        Fragment fragment = MapsFragment.newInstance();
         manager.beginTransaction()
                 .replace(R.id.fragment_container, fragment, FRAGMENT_3)
 //                .addToBackStack(null)
@@ -166,18 +131,28 @@ public class HomeActivity extends AppCompatActivity implements SearchListFragmen
         startActivity(intent);
     }
 
+    private void displaySearchActivity() {
+        Intent intent = new Intent(this, SearchActivity.class);
+        startActivityForResult(intent, REQUEST_REGISTER);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_REGISTER) {
+            if (resultCode == RESULT_OK) {
+                // TODO: Implement successful signup logic here
+//                Bundle extras = data.getExtras();
+//                mName = extras.getString(EXTRA_NAME);
+
+                displaySearchFragment();
+                updateNavigation();
+            }
+        }
+    }
 
     // make sure that the currently selected navigation matches current fragment displayed
     private void updateNavigation() {
-        EmptyFragment emptyFragment =
-                (EmptyFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_1);
-        if (emptyFragment != null) {
-            if (emptyFragment.isVisible()) {
-                // set navigation to Home
-                mBottomNavigationView.setSelectedItemId(R.id.navigation_home);
-            }
-        }
-
         SearchListFragment searchListFragment =
                 (SearchListFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_2);
         if (searchListFragment != null) {

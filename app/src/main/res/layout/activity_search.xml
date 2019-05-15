@@ -4,19 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="10dp"
+    tools:context=".SearchActivity">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/search_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:hint="Search"
+            android:layout_margin="20dp"
+            android:padding="10dp"
+            android:hint="@string/search_bar_hint"
             android:inputType="textAutoComplete"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,19 +25,21 @@
             android:id="@+id/location_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:hint="Location"
+            android:layout_margin="20dp"
+            android:padding="10dp"
+            android:hint="@string/location_bar_hint"
             android:inputType="textAutoComplete"
+            android:text="@string/default_location"
             app:layout_constraintTop_toBottomOf="@id/search_input" />
 
-        <Button
+        <ImageButton
             android:id="@+id/search_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
-            android:text="@string/app_name"
-
+            android:layout_margin="20dp"
+            android:background="@drawable/rounded_box"
+            android:src="@drawable/ic_action_search"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/location_input" />
@@ -45,7 +48,6 @@
             android:id="@+id/no_list_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/empty_list"
             android:textSize="14sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"

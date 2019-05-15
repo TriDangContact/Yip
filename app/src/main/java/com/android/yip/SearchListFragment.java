@@ -11,33 +11,17 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnSearchListFragmentInteractionListener}
- * interface.
- */
 public class SearchListFragment extends Fragment {
-
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private OnSearchListFragmentInteractionListener mListener;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public SearchListFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static SearchListFragment newInstance() {
         SearchListFragment fragment = new SearchListFragment();
         Bundle args = new Bundle();
         // put any argument you want into bundle
-//        args.putInt(ARG_COLUMN_COUNT);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,7 +32,6 @@ public class SearchListFragment extends Fragment {
 
         if (getArguments() != null) {
             // retrieve the arguments from bundle here
-//            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
     }
 
@@ -64,11 +47,10 @@ public class SearchListFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new SearchRecyclerViewAdapter(businessList, mListener));
+            recyclerView.setAdapter(new SearchRecyclerViewAdapter(businessList, mListener, getContext() ));
         }
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -86,7 +68,6 @@ public class SearchListFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
 
     public interface OnSearchListFragmentInteractionListener {
         // TODO: Update argument type and name

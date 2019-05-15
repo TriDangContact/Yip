@@ -36,4 +36,7 @@
     <dimen name="business_detail_review_user_rating_margin">2dp</dimen>
     <dimen name="business_detail_review_review_rating_width">100dp</dimen>
     <dimen name="business_detail_review_date_margin">10dp</dimen>
+
+    <item name="map_default_latitude" type="dimen" format="float">32.7157</item>
+    <item name="map_default_longitude" type="dimen" format="float">-117.1611</item>
 </resources>

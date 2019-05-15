@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 public class Review {
     private static final String LOG_TAG = "ReviewClass";
+
     public String mId;
     public String mRating;
     public HashMap<String, String> mUser;
