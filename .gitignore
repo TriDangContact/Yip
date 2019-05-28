@@ -11,6 +11,3 @@
 /build
 /captures
 .externalNativeBuild
-
-
-/app/src/main/res/values/yelp_fusion_api.xml

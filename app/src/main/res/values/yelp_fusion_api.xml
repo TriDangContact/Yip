@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="yelp_api_key">MY_YELP_API</string>
+
+    <!-- Endpoints-->
+    <string name="yelp_api_domain">api.yelp.com</string>
+    <string name="yelp_endpoint_autocomplete">v3/autocomplete</string>
+    <string name="yelp_endpoint_business">v3/businesses/</string>
+    <string name="yelp_endpoint_business_reviews">/reviews</string>
+    <string name="yelp_endpoint_business_search">search</string>
+
+    <!-- Parameters -->
+    <string name="yelp_parameters_business_search_term">term</string>
+    <string name="yelp_parameters_business_search_location">location</string>
+    <string name="yelp_parameters_business_search_latitude">latitude</string>
+    <string name="yelp_parameters_business_search_longitude">longitude</string>
+    <string name="yelp_parameters_business_search_radius">radius</string>
+    <string name="yelp_parameters_business_search_categories">categories</string>
+    <string name="yelp_parameters_business_search_locale">locale</string>
+    <string name="yelp_parameters_business_search_limit">limit</string>
+    <string name="yelp_parameters_business_search_offset">offset</string>
+    <string name="yelp_parameters_business_search_sort_by">sort_by</string>
+    <string name="yelp_parameters_business_search_price">price</string>
+    <string name="yelp_parameters_business_search_open_now">open_now</string>
+    <string name="yelp_parameters_business_search_open_at">open_at</string>
+    <string name="yelp_parameters_autocomplete_text">text</string>
+    <string name="yelp_parameters_autocomplete_latitude">latitude</string>
+    <string name="yelp_parameters_autocomplete_longitude">longitude</string>
+    <string name="yelp_parameters_autocomplete_locale">locale</string>
+
+    <!-- Response keys -->
+    <string name="yelp_response_business_search">businesses</string>
+    <string name="yelp_response_business_search_id">id</string>
+    <string name="yelp_response_business_search_alias">alias</string>
+    <string name="yelp_response_business_search_name">name</string>
+    <string name="yelp_response_business_search_image_url">image_url</string>
+    <string name="yelp_response_business_search_is_closed">is_closed</string>
+    <string name="yelp_response_business_search_url">url</string>
+    <string name="yelp_response_business_search_phone">phone</string>
+    <string name="yelp_response_business_search_display_phone">display_phone</string>
+    <string name="yelp_response_business_search_review_count">review_count</string>
+    <string name="yelp_response_business_search_categories">categories</string>
+    <string name="yelp_response_business_search_categories_alias">alias</string>
+    <string name="yelp_response_business_search_categories_title">title</string>
+    <string name="yelp_response_business_search_rating">rating</string>
+    <string name="yelp_response_business_search_coordinates">coordinates</string>
+    <string name="yelp_response_business_search_latitude">latitude</string>
+    <string name="yelp_response_business_search_longitude">longitude</string>
+    <string name="yelp_response_business_search_location">location</string>
+    <string name="yelp_response_business_search_address1">address1</string>
+    <string name="yelp_response_business_search_address2">address2</string>
+    <string name="yelp_response_business_search_address3">address3</string>
+    <string name="yelp_response_business_search_city">city</string>
+    <string name="yelp_response_business_search_state">state</string>
+    <string name="yelp_response_business_search_zip_code">zip_code</string>
+    <string name="yelp_response_business_search_country">country</string>
+    <string name="yelp_response_business_detail_photos">photos</string>
+    <string name="yelp_response_business_detail_price">price</string>
+    <string name="yelp_response_business_detail_hours">hours</string>
+    <string name="yelp_response_business_detail_hours_open">open</string>
+    <string name="yelp_response_business_detail_hours_start">start</string>
+    <string name="yelp_response_business_detail_hours_end">end</string>
+    <string name="yelp_response_business_detail_hours_day">day</string>
+    <string name="yelp_response_business_reviews">reviews</string>
+    <string name="yelp_response_business_reviews_id">id</string>
+    <string name="yelp_response_business_reviews_rating">rating</string>
+    <string name="yelp_response_business_reviews_user">user</string>
+    <string name="yelp_response_business_reviews_user_id">id</string>
+    <string name="yelp_response_business_reviews_user_profile_url">profile_url</string>
+    <string name="yelp_response_business_reviews_user_image_url">image_url</string>
+    <string name="yelp_response_business_reviews_user_name">name</string>
+    <string name="yelp_response_business_reviews_text">text</string>
+    <string name="yelp_response_business_reviews_time_created">time_created</string>
+    <string name="yelp_response_business_reviews_url">url</string>
+    <string name="yelp_response_autocomplete_terms">terms</string>
+    <string name="yelp_response_autocomplete_text">text</string>
+
+
+</resources>
