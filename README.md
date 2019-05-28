@@ -25,3 +25,10 @@ This app aims to replicate features of the Yelp app, allowing users to search up
 # API
 - Min API 23
 - Target API 24
+
+# Screenshots
+| | | |
+-------------------------|-------------------------|-------------------------
+|<img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot1.jpg?raw=true" width="150"> |<img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot2.jpg?raw=true" width="150">| <img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot3.jpg?raw=true" width="150"> |
+|<img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot4.jpg?raw=true" width="150">| <img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot5.jpg?raw=true" width="150"> | <img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot6.jpg?raw=true" width="150">|
+|<img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot7.jpg?raw=true" width="150"> | <img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot8.jpg?raw=true" width="150">| <img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot9.jpg?raw=true" width="150"> | 
