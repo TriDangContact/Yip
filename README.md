@@ -1,9 +1,6 @@
 # Yip
 This app aims to replicate features of the Yelp app, allowing users to search up businesses, view business details, and view business reviews.
 
-## Team
-- Tri Dang (REDID: 814009034)
-
 ## Key Features:
 - Click on Search to search for businesses using search term and Location
 - Enable Location Services to get current location (In Progress)
@@ -16,10 +13,14 @@ This app aims to replicate features of the Yelp app, allowing users to search up
 - Google Play Services Maps
 - Google Play Services Location
 - Android Volley standard library to make API calls
-- Glide v4 for fast and efficient image loading
+- Glide v4 for fast and efficient image loading (https://bumptech.github.io/glide/)
 
 # To Run:
-- Clone the repo and run it on Android Studio emulator or Android device
+- Clone the repo
+- Register for a Yelp API Key: https://www.yelp.com/developers/documentation/v3/authentication
+- Go to /app/src/main/res/values/yelp_fusion_api.xml file
+- Replace `MY_YELP_API` with your Yelp API Key as such: `<string name="yelp_api_key">MY_YELP_API_KEY</string>`
+-  Run it on Android Studio emulator or Android device
 
 # API
 - Min API 23
