@@ -20,6 +20,9 @@ This app aims to replicate features of the Yelp app, allowing users to search up
 - Register for a Yelp API Key: https://www.yelp.com/developers/documentation/v3/authentication
 - Go to /app/src/main/res/values/yelp_fusion_api.xml file
 - Replace `MY_YELP_API` with your Yelp API Key as such: `<string name="yelp_api_key">MY_YELP_API_KEY</string>`
+- Register for a Google Maps API Key: https://console.developers.google.com/
+- Go to /app/src/main/res/values/google_maps_api.xml file
+- Replace `MY_MAPS_API` with your Google Maps API Key as such: `<string name="google_maps_key">MY_MAPS_API_KEY</string>`
 -  Run it on Android Studio emulator or Android device
 
 # API
@@ -31,4 +34,4 @@ This app aims to replicate features of the Yelp app, allowing users to search up
 -------------------------|-------------------------|-------------------------
 |<img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot1.jpg?raw=true" width="150"> |<img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot2.jpg?raw=true" width="150">| <img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot3.jpg?raw=true" width="150"> |
 |<img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot4.jpg?raw=true" width="150">| <img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot5.jpg?raw=true" width="150"> | <img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot6.jpg?raw=true" width="150">|
-|<img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot7.jpg?raw=true" width="150"> | <img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot8.jpg?raw=true" width="150">| <img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot9.jpg?raw=true" width="150"> | 
+|<img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot7.jpg?raw=true" width="150"> | <img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot8.jpg?raw=true" width="150">| <img src="https://github.com/TriDangContact/Yip/blob/master/assets/screenshots/Screenshot9.jpg?raw=true" width="150"> |
