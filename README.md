@@ -13,14 +13,14 @@ This app aims to replicate features of the Yelp app, allowing users to search up
 - Google Play Services Maps
 - Google Play Services Location
 - Android Volley standard library to make API calls
-- Glide v4 for fast and efficient image loading (https://bumptech.github.io/glide/)
+- [Glide v4 for fast and efficient image loading](https://bumptech.github.io/glide/)
 
 # To Run:
 - Clone the repo
-- Register for a Yelp API Key: https://www.yelp.com/developers/documentation/v3/authentication
+- [Register for a Yelp API Key:](https://www.yelp.com/developers/documentation/v3/authentication)
 - Go to /app/src/main/res/values/yelp_fusion_api.xml file
 - Replace `MY_YELP_API` with your Yelp API Key as such: `<string name="yelp_api_key">MY_YELP_API_KEY</string>`
-- Register for a Google Maps API Key: https://console.developers.google.com/
+- [Register for a Google Maps API Key:](https://console.developers.google.com/)
 - Go to /app/src/main/res/values/google_maps_api.xml file
 - Replace `MY_MAPS_API` with your Google Maps API Key as such: `<string name="google_maps_key">MY_MAPS_API_KEY</string>`
 -  Run it on Android Studio emulator or Android device
